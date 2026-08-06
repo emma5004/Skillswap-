@@ -7,19 +7,27 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/browse.html')
+@app.route('/browse')
 def browse():
     return render_template('browse.html')
 
-@app.route('/teach.html')
+@app.route('/teach')
 def teach():
     return render_template('teach.html')
 
-@app.route('/login.html')
+@app.route('/teach-skill')
+def teach_skill():
+    return render_template('teach-skill.html')
+
+@app.route('/find-skills')
+def find_skills():
+    return render_template('find-skills.html')
+
+@app.route('/login')
 def login():
     return render_template('login.html')
 
-@app.route('/signup.html')
+@app.route('/signup')
 def signup():
     return render_template('signup.html')
 

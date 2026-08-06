@@ -16,6 +16,16 @@
     </nav>
     <div class="container">
         <h1>Login</h1>
+
+        <!-- THIS SHOWS SUCCESS/ERROR MESSAGES -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <p style="background:#d4edda; padding:10px; border-radius:5px; color:#155724; margin-bottom:15px;">
+              {{ messages[0] }}
+            </p>
+          {% endif %}
+        {% endwith %}
+
         <form method="POST">
             <label>Email:</label><br>
             <input type="email" name="email" required><br><br>
@@ -27,4 +37,4 @@
         </form>
     </div>
 </body>
-</html>
+                </html>

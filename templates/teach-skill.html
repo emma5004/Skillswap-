@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Teach Skill - SkillSwap</title>
+    <title>Teach a Skill - SkillSwap</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -15,9 +15,39 @@
         <a href="/signup">Sign Up</a>
     </nav>
     <div class="container">
-        <h1>Teach Your Skill</h1>
-        <p>Share what you know with others!</p>
-        <p>Coming Soon: Form to add your skill</p>
+        <h1>Teach a Skill</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <p style="background:#d4edda; padding:10px; border-radius:5px; color:#155724; margin-bottom:15px;">
+              {{ messages[0] }}
+            </p>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label>Skill Name:</label><br>
+            <input type="text" name="skill_name" placeholder="e.g. Python Programming" required><br><br>
+            
+            <label>Category:</label><br>
+            <select name="category" required>
+                <option value="">Choose Category</option>
+                <option value="Tech">Tech</option>
+                <option value="Music">Music</option>
+                <option value="Cooking">Cooking</option>
+                <option value="Language">Language</option>
+                <option value="Art">Art</option>
+                <option value="Fitness">Fitness</option>
+            </select><br><br>
+
+            <label>Location:</label><br>
+            <input type="text" name="location" placeholder="e.g. Port Harcourt" required><br><br>
+
+            <label>Description:</label><br>
+            <textarea name="description" rows="4" placeholder="What can you teach? How long?" required></textarea><br><br>
+            
+            <button type="submit" class="btn">Post My Skill</button>
+        </form>
     </div>
 </body>
-</html>
+                                        </html>

@@ -1,40 +1,4 @@
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #ffffff;
-    color: #333;
-    line-height: 1.6;
-}
-
-/* HEADER WITH LOGO */
-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 15px 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-header h1 {
-    font-size: 1.5em;
-    margin: 0;
-}
-
-.logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: white;
-    padding: 5px;
-    object-fit: contain;
-    flex-shrink: 0;
-}
-
-/* DELETE THE OLD .header-gradient STUFF */
+body {background: #f0f8ff; font-family: Arial; margin: 0;}
+nav {background: #4a90e2; padding: 15px;}
+nav a {color: white; margin-right: 15px; text-decoration: none;}
+h1 {color: #4a90e2;}

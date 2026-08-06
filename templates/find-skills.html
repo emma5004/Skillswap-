@@ -1,70 +1,23 @@
 <!DOCTYPE html>
-<html>
-<head><title>Find Skills - SkillSwap</title></head>
-<body style="font-family:Arial; background:#f9fafb; margin:0;">
-
-<div style="background:white; padding:20px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-  <a href="index.html">← Back Home</a>
-  <h1 style="color:#1e40af;">SkillSwap</h1>
-</div>
-
-<div style="max-width:800px; margin:30px auto; padding:20px;">
-  <h2 style="text-align:center; color:#1e40af; font-size:28px;">Find Skills</h2>
-  <p style="text-align:center; color:#666;">Connect with people who can teach you new skills</p>
-
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-top:30px;">
-    
-    <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-      <h3 style="color:#1e40af;">🎨 Graphic Design</h3>
-      <p><b>Teacher:</b> Sarah</p>
-      <button onclick="alert('Connection request sent to Sarah!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer;">Connect</button>
-<button onclick="alert('Connection request sent to Sarah!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer;">Connect</button>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find Skills - SkillSwap</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/find-skills">Find Skills</a>
+        <a href="/teach-skill">Teach</a>
+        <a href="/browse">Browse</a>
+        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>
+    </nav>
+    <div class="container">
+        <h1>Find Skills</h1>
+        <p>Search for people who can teach you something new!</p>
+        <p>Coming Soon: Search bar and skill listings</p>
     </div>
-
-    <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-      <h3 style="color:#1e40af;">👨‍🍳 Cooking</h3>
-      <p><b>Teacher:</b> Mike</p>
-    <button onclick="alert('Connection request sent to Mike!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer;">Connect</button>
-      <button onclick="alert('Connection request sent to Mike!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer;">Connect</button>
-    </div>
-
-    <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-      <h3 style="color:#1e40af;">💻 Coding</h3>
-      <p><b>Teacher:</b> John</p>
-      <button onclick="alert('Connection request sent to John!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer;">Connect</button>
-  <button onclick="alert('Connection request sent to John!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer;">Connect</button>
-    </div>
-
-  </div>
-</div>
-
 </body>
-</html><!DOCTYPE html>
-<html>
-<head><title>Browse Skills - SkillSwap</title></head>
-<body style="font-family:Arial; background:#f9fafb; margin:0;">
-
-<div style="background:white; padding:20px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-  <a href="index.html">← Back Home</a>
-  <h1 style="color:#1e40af;">SkillSwap</h1>
-</div>
-
-<div style="max-width:800px; margin:30px auto; padding:20px;">
-  <h2 style="text-align:center; color:#1e40af; font-size:28px;">Browse Skills 🔍</h2>
-  <p style="text-align:center; color:#666;">Connect with people who can teach you</p>
-
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-top:30px;">
-    
-    <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-      <h3 style="color:#1e40af;">🎨 Graphic Design</h3>
-      <p><b>Teacher:</b> Sarah</p>
-      <p><b>Skills:</b> Canva, Photoshop, Logo Design</p>
-      <button onclick="alert('Connection request sent to Sarah!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px;">Connect</button>
-    <button onclick="alert('Connection request sent to Sarah!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer;">Connect</button>
-
-    <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-      <h3 style="color:#1e40af;">👨‍🍳 Cooking</h3>
-      <p><b>Teacher:</b> Mike</p>
-      <p><b>Skills:</b> Jollof Rice, Fried Rice, Pastries</p>
-      <button onclick="alert('Connection request sent to Mike!')" style="background:#1e40af; color:white; padding:10px 15px; border:none; border-radius:5px;">Connect</button>
-  <button onclick="alert('Connection request sent to Mike!')" style="background:#1e40af; color:white; padding:10px 15px; border:no
+</html>

@@ -65,8 +65,19 @@ def browse():
 
 
 # ADD SKILL
-@app.route('/add-skill')
+@app.route('/add-skill', methods=['GET', 'POST'])
 def add_skill():
+
+    if request.method == 'POST':
+
+        skill = request.form.get('skill')
+        category = request.form.get('category')
+        level = request.form.get('level')
+        description = request.form.get('description')
+
+        # For now, we'll display the skill on the dashboard later.
+        return redirect('/dashboard')
+
     return render_template('teach_skill.html')
 
 

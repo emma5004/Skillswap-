@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -9,15 +9,21 @@ def home():
     return render_template('home.html')
 
 
-# LOGIN PAGE
-@app.route('/login')
+# LOGIN
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        return redirect('/dashboard')
+
     return render_template('login.html')
 
 
-# SIGN UP PAGE
-@app.route('/signup')
+# SIGN UP
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if request.method == 'POST':
+        return redirect('/dashboard')
+
     return render_template('signup.html')
 
 
@@ -42,7 +48,7 @@ def add_skill():
 # LOGOUT
 @app.route('/logout')
 def logout():
-    return render_template('home.html')
+    return redirect('/')
 
 
 if __name__ == '__main__':

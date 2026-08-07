@@ -1,44 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teach a Skill - SkillSwap</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>Skill Swap</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#f5f7fa;
+}
+
+.container{
+    text-align:center;
+}
+
+.logo{
+    font-size:48px;
+    font-weight:bold;
+    color:#007BFF;
+    margin-bottom:40px;
+}
+
+.btn{
+    display:block;
+    width:220px;
+    padding:15px;
+    margin:15px auto;
+    text-decoration:none;
+    color:white;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.login{
+    background:#007BFF;
+}
+
+.signup{
+    background:#28a745;
+}
+
+.btn:hover{
+    opacity:0.9;
+}
+</style>
 </head>
+
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/find-skills">Find Skills</a>
-        <a href="/teach-skill">Teach</a>
-        <a href="/browse">Browse</a>
 
-        <!-- THIS CHANGES BASED ON LOGIN -->
-        {% if user %}
-            <span style="color:white; padding:8px 15px; font-weight:bold;">Welcome, {{ user }}</span>
-            <a href="/logout">Logout</a>
-        {% else %}
-            <a href="/login">Login</a>
-            <a href="/signup">Sign Up</a>
-        {% endif %}
-    </nav>
+<div class="container">
+    <div class="logo">Skill Swap</div>
 
-    <div class="container">
-        <h1>Welcome to SkillSwap</h1>
+    <a href="/login" class="btn login">Login</a>
+    <a href="/signup" class="btn signup">Sign Up</a>
+</div>
 
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <p style="background:#d4edda; padding:10px; border-radius:5px; color:#155724; margin-bottom:15px;">
-              {{ messages[0] }}
-            </p>
-          {% endif %}
-        {% endwith %}
-
-        <p>Exchange skills with people in your community. No money needed.</p>
-
-        <a href="/find-skills" class="btn">Find Skills</a>
-        <a href="/teach-skill" class="btn">Teach a Skill</a>
-        <a href="/browse" class="btn">Browse All</a>
-    </div>
 </body>
-            </html>
+                                                </html>

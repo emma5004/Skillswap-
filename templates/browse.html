@@ -8,16 +8,28 @@
 <body>
     <nav>
         <a href="/">Home</a>
-        <a href="/find-skills">Find Skills</a>
-        <a href="/teach-skill">Teach</a>
         <a href="/browse">Browse</a>
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
+        <a href="/teach-skill">Teach</a>
+        <a href="/inbox">Inbox</a>
+        {% if user %}
+            <span style="color:white; padding:8px 15px; font-weight:bold;">Welcome, {{ user }}</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
+        {% endif %}
     </nav>
+
     <div class="container">
         <h1>Browse Skills</h1>
-        <p>Find someone to teach you or offer your skills</p>
 
+        <!-- SEARCH BAR -->
+        <form method="GET" style="margin-bottom:20px; display:flex; gap:10px;">
+            <input type="text" name="search" placeholder="Search skills, category, location..." style="flex:1; padding:10px;">
+            <button type="submit" class="btn">Search</button>
+        </form>
+
+        <!-- SKILL CARDS -->
         {% if skills %}
             {% for skill in skills %}
             <div style="border:1px solid #ddd; padding:15px; margin:15px 0; border-radius:8px; background:#f9f9f9;">
@@ -26,12 +38,18 @@
                 <p><b>Location:</b> {{ skill[3] }}</p>
                 <p><b>Description:</b> {{ skill[4] }}</p>
                 <p><b>Posted by:</b> {{ skill[5] }}</p>
-                <button class="btn">Contact</button>
+
+                <!-- THIS IS THE CHAT BUTTON -->
+                {% if user %}
+                    <a href="/chat/{{ skill[5] }}" class="btn">Message</a>
+                {% else %}
+                    <a href="/login" class="btn">Login to Message</a>
+                {% endif %}
             </div>
             {% endfor %}
         {% else %}
-            <p style="text-align:center; padding:30px;">No skills posted yet. Be the first! 
-            <a href="/teach-skill">Post a skill</a></p>
+            <p style="text-align:center; padding:30px;">No skills posted yet.
+            Be the first! <a href="/teach-skill">Post a skill</a></p>
         {% endif %}
     </div>
 </body>

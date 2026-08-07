@@ -1,12 +1,19 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="hero-container">
+<div class="container">
     <div class="logo">
         <img src="{{ url_for('static', filename='logo.png') }}" alt="SkillSwap Logo">
     </div>
-    <h1 style="color:#3b82f6; font-size:40px;">Skill Swap</h1>
-    <p style="margin-bottom:35px; color:#64748b;">Share Skills, Grow Together</p>
-    <a href="/login" class="btn" style="background:#3b82f6;">Login</a>
-    <a href="/signup" class="btn" style="background:#22c55e;">Sign Up</a>
+    
+    <h1>Skill Swap</h1>
+    <p>Share Skills, Grow Together</p>
+
+    <a href="/login" class="btn" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">Login</a>
+    <a href="/signup" class="btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);">Sign Up</a>
 </div>
+
+<footer>
+    © 2026 SkillSwap. All rights reserved.
+</footer>
 {% endblock %}

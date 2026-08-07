@@ -1,14 +1,47 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="container">
-    <div class="card">
-        <div class="logo">
-            <img src="https://cdn-icons-png.flaticon.com/512/921/921347.png" alt="Skill Swap Logo">
-        </div>
-        <h1>Skill Swap</h1>
-        <p>Share Skills, Grow Together</p>
-        <a href="/login" class="btn btn-login">Login</a>
-        <a href="/signup" class="btn btn-signup">Sign Up</a>
+
+<div class="page">
+
+    <div class="home-card">
+
+        <!-- Skill Swap Logo -->
+        <img
+            src="{{ url_for('static', filename='logo.png') }}"
+            alt="Skill Swap Logo"
+            class="logo"
+        >
+
+        <!-- Title -->
+        <h1 class="home-title">
+            Skill Swap
+        </h1>
+
+        <!-- Tagline -->
+        <p class="home-subtitle">
+            Share Skills, Grow Together
+        </p>
+
+        <!-- Login -->
+        <a href="/login"
+           class="home-button login-button">
+            Login
+        </a>
+
+        <!-- Sign Up -->
+        <a href="/signup"
+           class="home-button signup-button">
+            Sign Up
+        </a>
+
     </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        © 2026 SkillSwap. All rights reserved.
+    </div>
+
 </div>
+
 {% endblock %}

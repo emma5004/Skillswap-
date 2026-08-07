@@ -1,61 +1,52 @@
 body {
-    background: #f0f8ff;
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    background-color: #f0f8ff;
+    font-size: 16px; /* bigger text */
 }
+
+.container {
+    width: 95%; /* was 80%. Use more screen */
+    max-width: 600px; /* don't get too wide on desktop */
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
 nav {
-    background: #4a90e2;
-    padding: 15px;
-    text-align: center;
+    background: #007BFF;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap; /* allow nav to wrap on small screens */
+    gap: 5px;
 }
+
 nav a {
     color: white;
-    margin: 0 15px;
     text-decoration: none;
-    font-weight: bold;
+    padding: 8px 12px;
+    font-size: 14px;
 }
-nav a:hover {
-    text-decoration: underline;
-}
-.container {
-    background: white;
-    padding: 30px;
-    margin: 30px auto;
-    border-radius: 10px;
-    max-width: 800px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-h1 {
-    color: #4a90e2;
-}
+
 .btn {
-    background: #4a90e2;
+    background: #007BFF;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 10px;
-}
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0 15px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-button.btn {
+    padding: 12px 20px; /* bigger button for finger */
     border: none;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    }
-select, textarea {
+}
+
+input, textarea, select {
     width: 100%;
-    padding: 10px;
-    margin: 5px 0 15px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px; /* bigger input */
+    margin: 8px 0;
+    font-size: 16px;
     box-sizing: border-box;
-    }
+}
+
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }

@@ -1,15 +1,12 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="card">
-    <h1>SkillSwap</h1>
-    <p>Teach what you know. Learn what you want. <br> Connect with skilled people in Port Harcourt.</p>
-    <a href="{{ url_for('browse') }}" class="btn">Find Skills Now</a>
-</div>
-<div class="card">
-    <h2>Why SkillSwap?</h2>
-    <p><b>Free to Join</b> - Start learning today<br>
-    <b>Earn Money</b> - Teach and get paid<br>
-    <b>Local First</b> - Meet people near you</p>
+<div class="container">
+    <div class="logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="logo">
+    </div>
+    <h1>Teach Skew</h1>
+    <p>Learn and teach skills with people around you</p>
+    <a href="/browse" class="btn">Browse Skills</a>
+    <a href="/add-skill" class="btn">Teach a Skill</a>
 </div>
 {% endblock %}

@@ -65,8 +65,24 @@ def browse():
 
 
 # ADD SKILL
-@app.route('/add-skill', methods=['GET', 'POST'])
-def add_skill():
+@app.route('/learn-skill', methods=['GET', 'POST'])
+def learn_skill():
+
+    if request.method == 'POST':
+
+        skill = request.form.get('skill')
+        category = request.form.get('category')
+        level = request.form.get('level')
+        description = request.form.get('description')
+
+        session['learning_skill'] = skill
+        session['learning_category'] = category
+        session['learning_level'] = level
+        session['learning_description'] = description
+
+        return redirect('/dashboard')
+
+    return render_template('learn_skill.html')
 
     if request.method == 'POST':
 

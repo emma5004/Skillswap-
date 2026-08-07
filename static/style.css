@@ -408,3 +408,177 @@ body {
         padding: 25px 20px;
     }
     }
+/* DASHBOARD FIX */
+
+.dashboard-page {
+    margin: 0;
+    background: #f5f7fb;
+    font-family: Arial, sans-serif;
+    color: #222;
+}
+
+.dashboard-nav {
+    height: 70px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.dashboard-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1746a2;
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.small-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #1746a2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-links {
+    display: flex;
+    gap: 20px;
+}
+
+.dashboard-links a {
+    text-decoration: none;
+    color: #555;
+}
+
+.logout-btn {
+    background: #1746a2;
+    color: white !important;
+    padding: 10px 17px;
+    border-radius: 7px;
+}
+
+.dashboard-container {
+    width: 88%;
+    max-width: 1200px;
+    margin: 35px auto;
+}
+
+.welcome-section {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    margin-bottom: 35px;
+}
+
+.welcome-section h1 {
+    color: #1746a2;
+}
+
+.welcome-section p {
+    color: #777;
+}
+
+.profile-button {
+    background: #1746a2;
+    color: white;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 8px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.dashboard-card h3 {
+    color: #1746a2;
+}
+
+.dashboard-card p {
+    color: #777;
+    line-height: 1.5;
+}
+
+.dashboard-card button,
+.primary-button {
+    background: #1746a2;
+    color: white;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 7px;
+}
+
+.dashboard-section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.empty-card {
+    background: white;
+    padding: 40px 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.empty-card p {
+    color: #777;
+}
+
+.add-button {
+    background: white;
+    color: #1746a2;
+    border: 1px solid #1746a2;
+    padding: 9px 14px;
+    border-radius: 7px;
+}
+
+@media (max-width: 800px) {
+
+    .dashboard-links a:not(.logout-btn) {
+        display: none;
+    }
+
+    .dashboard-container {
+        width: 92%;
+    }
+
+    .welcome-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-button {
+        width: 100%;
+    }
+    }

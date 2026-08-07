@@ -582,3 +582,23 @@ body {
         width: 100%;
     }
     }
+.dashboard-card-button {
+    display: inline-block;
+    background: #1746a2;
+    color: white;
+    padding: 11px 16px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.dashboard-card-button:hover {
+    background: #10357d;
+}
+
+.primary-button {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    }
+ 

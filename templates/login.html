@@ -3,48 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login | Skill Swap</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body class="auth-page">
 
     <div class="auth-container">
 
+        <!-- LOGO -->
         <div class="auth-logo">
-            <div class="logo-circle">SS</div>
+
+            <div class="logo-circle">
+                SS
+            </div>
+
             <h1>Skill Swap</h1>
+
             <p>Learn. Teach. Connect.</p>
+
         </div>
 
-        <div class="auth-box">
-            <h2>Welcome Back</h2>
-            <p class="auth-subtitle">Login to continue your Skill Swap journey.</p>
 
+        <!-- LOGIN BOX -->
+        <div class="auth-box">
+
+            <h2>Welcome Back</h2>
+
+            <p class="auth-subtitle">
+                Login to continue your Skill Swap journey.
+            </p>
+
+
+            <!-- LOGIN FORM -->
             <form method="POST" action="/login">
 
-                <label>Email Address</label>
-                <input type="email" name="email" placeholder="Enter your email" required>
+                <label for="email">
+                    Email Address
+                </label>
 
-                <label>Password</label>
-                <input type="password" name="password" placeholder="Enter your password" required>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
 
                 <div class="forgot">
                     <a href="#">Forgot password?</a>
                 </div>
 
-                <button type="submit" class="auth-button">Login</button>
+
+                <button type="submit" class="auth-button">
+                    Login
+                </button>
+
             </form>
 
+
+            <!-- SIGN UP LINK -->
             <p class="switch-page">
+
                 Don't have an account?
-                <a href="/signup">Sign Up</a>
+
+                <a href="/signup">
+                    Sign Up
+                </a>
+
             </p>
+
         </div>
 
-        <a href="/" class="back-home">← Back to Home</a>
+
+        <!-- BACK HOME -->
+        <a href="/" class="back-home">
+            ← Back to Home
+        </a>
 
     </div>
 
 </body>
-        </html>
+                    </html>

@@ -1,41 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teach a Skill - SkillSwap</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/find-skills">Find Skills</a>
-        <a href="/teach-skill">Teach</a>
-        <a href="/browse">Browse</a>
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
-    </nav>
-    <div class="container">
-        <h1>Login</h1>
+{% extends "base.html" %}
 
-        <!-- THIS SHOWS SUCCESS/ERROR MESSAGES -->
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <p style="background:#d4edda; padding:10px; border-radius:5px; color:#155724; margin-bottom:15px;">
-              {{ messages[0] }}
-            </p>
-          {% endif %}
-        {% endwith %}
-
-        <form method="POST">
-            <label>Email:</label><br>
-            <input type="email" name="email" required><br><br>
-            
-            <label>Password:</label><br>
-            <input type="password" name="password" required><br><br>
-            
-            <button type="submit" class="btn">Login</button>
-        </form>
-    </div>
-</body>
-                </html>
+{% block content %}
+<div class="card">
+    <h2>Login</h2>
+    <form>
+        <input type="email" placeholder="Email" required style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #334155; background:#0f172a; color:white;">
+        <input type="password" placeholder="Password" required style="width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #334155; background:#0f172a; color:white;">
+        <button class="btn" type="submit">Login</button>
+    </form>
+    <p>Don't have account? <a href="{{ url_for('signup') }}" style="color:var(--accent)">Sign Up</a></p>
+</div>
+{% endblock %}

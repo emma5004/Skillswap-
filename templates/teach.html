@@ -1,27 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+.form-group { margin-bottom: 18px; }
+label { display: block; margin-bottom: 6px; font-weight: 600; color: #e5e7eb; }
+input, select, textarea { 
+    width: 100%; 
+    padding: 12px; 
+    border-radius: 8px; 
+    border: 1px solid #1f2937; 
+    background: #111827; 
+    color: #e5e7eb; 
+    font-size: 15px;
+}
+small { display: block; margin-top: 6px; color: #38bdf8; font-size: 13px; }
+</style>
+
 <div class="card">
     <h2>Teach a Skill & Earn Money</h2>
     <p>Set your price. We suggest minimums based on demand.</p>
 
     <form method="POST">
-        <label>Skill Name</label>
-        <input type="text" name="skill_name" placeholder="e.g. Web Development" required>
+        <div class="form-group">
+            <label>Skill Name</label>
+            <input type="text" name="skill_name" placeholder="e.g. Web Development" required>
+        </div>
 
-        <label>Skill Category</label>
-        <select name="category" id="category" required>
-            <option value="high">High Demand - Min ₦5,000/hr</option>
-            <option value="medium">Medium Demand - Min ₦3,000/hr</option>
-            <option value="low">Low Demand - Min ₦1,500/hr</option>
-        </select>
+        <div class="form-group">
+            <label>Skill Category</label>
+            <select name="category" id="category" required>
+                <option value="high">High Demand - Min ₦5,000/hr</option>
+                <option value="medium">Medium Demand - Min ₦3,000/hr</option>
+                <option value="low">Low Demand - Min ₦1,500/hr</option>
+            </select>
+        </div>
 
-        <label>Price per hour (₦)</label>
-        <input type="number" name="price" id="price" min="5000" value="5000" required>
-        <small id="hint">Minimum: ₦5,000</small>
+        <div class="form-group">
+            <label>Price per hour (₦)</label>
+            <input type="number" name="price" id="price" min="5000" value="5000" required>
+            <small id="hint">Minimum: ₦5,000</small>
+        </div>
 
-        <label>Description</label>
-        <textarea name="description" rows="4" placeholder="What will students learn? Your experience?" required></textarea>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="4" placeholder="What will students learn? Your experience?" required></textarea>
+        </div>
 
         <button type="submit" class="btn">List My Skill</button>
     </form>
@@ -40,5 +63,3 @@ category.addEventListener('change', () => {
     price.value = min;
     hint.innerText = `Minimum: ₦${min.toLocaleString()}`;
 });
-</script>
-{% endblock %}

@@ -9,13 +9,13 @@
 </head>
 <body>
 
-    {% if request.endpoint != 'index' %}
+    {% if request.path != '/' %}
     <nav class="navbar">
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('browse') }}">Browse Skills</a>
-        <a href="{{ url_for('teach') }}">Teach a Skill</a>
-        <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('signup') }}">Sign Up</a>
+        <a href="/">Home</a>
+        <a href="/browse">Browse Skills</a>
+        <a href="/teach">Teach a Skill</a>
+        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>
     </nav>
     {% endif %}
 

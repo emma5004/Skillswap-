@@ -1,65 +1,30 @@
-{% extends "base.html" %}
+@app.route('/teach', methods=['GET', 'POST'])
+def teach():
+    if 'user' not in session:
+        return redirect(url_for('login'))
 
-{% block content %}
-<style>
-.form-group { margin-bottom: 18px; }
-label { display: block; margin-bottom: 6px; font-weight: 600; color: #e5e7eb; }
-input, select, textarea { 
-    width: 100%; 
-    padding: 12px; 
-    border-radius: 8px; 
-    border: 1px solid #1f2937; 
-    background: #111827; 
-    color: #e5e7eb; 
-    font-size: 15px;
-}
-small { display: block; margin-top: 6px; color: #38bdf8; font-size: 13px; }
-</style>
+    if request.method == 'POST':
+        skill_name = request.form['skill_name']
+        category = request.form['category']
+        price = int(request.form['price'])
+        description = request.form['description']
+        teacher = session['user']
 
-<div class="card">
-    <h2>Teach a Skill & Earn Money</h2>
-    <p>Set your price. We suggest minimums based on demand.</p>
+        # Block prices below minimum
+        mins = {'high': 5000, 'medium': 3000, 'low': 1500}
+        if price < mins[category]:
+            return f"Error: Minimum price for this category is ₦{mins[category]}"
 
-    <form method="POST">
-        <div class="form-group">
-            <label>Skill Name</label>
-            <input type="text" name="skill_name" placeholder="e.g. Web Development" required>
-        </div>
-
-        <div class="form-group">
-            <label>Skill Category</label>
-            <select name="category" id="category" required>
-                <option value="high">High Demand - Min ₦5,000/hr</option>
-                <option value="medium">Medium Demand - Min ₦3,000/hr</option>
-                <option value="low">Low Demand - Min ₦1,500/hr</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Price per hour (₦)</label>
-            <input type="number" name="price" id="price" min="5000" value="5000" required>
-            <small id="hint">Minimum: ₦5,000</small>
-        </div>
-
-        <div class="form-group">
-            <label>Description</label>
-            <textarea name="description" rows="4" placeholder="What will students learn? Your experience?" required></textarea>
-        </div>
-
-        <button type="submit" class="btn">List My Skill</button>
-    </form>
-</div>
-
-<script>
-const category = document.getElementById('category');
-const price = document.getElementById('price');
-const hint = document.getElementById('hint');
-
-const mins = {high: 5000, medium: 3000, low: 1500};
-
-category.addEventListener('change', () => {
-    let min = mins[category.value];
-    price.min = min;
-    price.value = min;
-    hint.innerText = `Minimum: ₦${min.toLocaleString()}`;
-});
+        # Save to database - temporary list for now
+        # Later we will use SQLite
+        skills.append({
+            'skill_name': skill_name,
+            'category': category,
+            'price': price,
+            'description': description,
+            'teacher': teacher
+        })
+        
+        return redirect(url_for('browse'))
+    
+    return render_template('teach.html')

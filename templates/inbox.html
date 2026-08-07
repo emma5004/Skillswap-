@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inbox - SkillSwap</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/browse">Browse</a>
+        <a href="/teach-skill">Teach</a>
+        <a href="/inbox">Inbox</a>
+        {% if user %}
+            <span style="color:white; padding:8px 15px; font-weight:bold;">Welcome, {{ user }}</span>
+            <a href="/logout">Logout</a>
+        {% endif %}
+    </nav>
 
+    <div class="container">
+        <h1>📥 My Inbox</h1>
+
+        {% if contacts %}
+            {% for c in contacts %}
+                <div style="padding:15px; border-bottom:1px solid #ddd; background:white; margin-bottom:5px; border-radius:5px;">
+                    <a href="/chat/{{ c[0] }}" style="text-decoration:none; font-size:18px; color:#007BFF; font-weight:bold;">
+                        💬 {{ c[0] }}
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align:center; padding:30px;">No messages yet.
+            <br>Go to <a href="/browse">Browse</a> and click "Message" on any skill</p>
+        {% endif %}
+    </div>
+</body>
+</html>

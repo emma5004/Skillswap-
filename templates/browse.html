@@ -1,57 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teach a Skill - SkillSwap</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/browse">Browse</a>
-        <a href="/teach-skill">Teach</a>
-        <a href="/inbox">Inbox</a>
-        {% if user %}
-            <span style="color:white; padding:8px 15px; font-weight:bold;">Welcome, {{ user }}</span>
-            <a href="/logout">Logout</a>
-        {% else %}
-            <a href="/login">Login</a>
-            <a href="/signup">Sign Up</a>
-        {% endif %}
-    </nav>
+{% extends "base.html" %}
 
-    <div class="container">
-        <h1>Browse Skills</h1>
+{% block content %}
+<div class="card">
+    <h2>Find Skills</h2>
+    <p>Top skills available now:</p>
+</div>
 
-        <!-- SEARCH BAR -->
-        <form method="GET" style="margin-bottom:20px; display:flex; gap:10px;">
-            <input type="text" name="search" placeholder="Search skills, category, location..." style="flex:1; padding:10px;">
-            <button type="submit" class="btn">Search</button>
-        </form>
+<div class="card">
+    <h3>📱 Graphic Design</h3>
+    <p>Teacher: Ada | Location: PH | ₦5000/hr</p>
+    <button class="btn">Contact Teacher</button>
+</div>
 
-        <!-- SKILL CARDS -->
-        {% if skills %}
-            {% for skill in skills %}
-            <div style="border:1px solid #ddd; padding:15px; margin:15px 0; border-radius:8px; background:#f9f9f9;">
-                <h2 style="color:#007BFF; margin-top:0;">{{ skill[1] }}</h2>
-                <p><b>Category:</b> {{ skill[2] }}</p>
-                <p><b>Location:</b> {{ skill[3] }}</p>
-                <p><b>Description:</b> {{ skill[4] }}</p>
-                <p><b>Posted by:</b> {{ skill[5] }}</p>
+<div class="card">
+    <h3>💻 Web Development</h3>
+    <p>Teacher: Izu | Location: Online | ₦8000/hr</p>
+    <button class="btn">Contact Teacher</button>
+</div>
 
-                <!-- THIS IS THE CHAT BUTTON -->
-                {% if user %}
-                    <a href="/chat/{{ skill[5] }}" class="btn">Message</a>
-                {% else %}
-                    <a href="/login" class="btn">Login to Message</a>
-                {% endif %}
-            </div>
-            {% endfor %}
-        {% else %}
-            <p style="text-align:center; padding:30px;">No skills posted yet.
-            Be the first! <a href="/teach-skill">Post a skill</a></p>
-        {% endif %}
-    </div>
-</body>
-</html>
+<div class="card">
+    <h3>🎤 Music Production</h3>
+    <p>Teacher: Daniel | Location: PH | ₦6000/hr</p>
+    <button class="btn">Contact Teacher</button>
+</div>
+{% endblock %}

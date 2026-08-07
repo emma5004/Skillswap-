@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
 
 <body class="dashboard-page">
 
-    <!-- TOP NAVIGATION -->
+    <!-- NAVIGATION -->
     <nav class="dashboard-nav">
 
         <div class="dashboard-logo">
@@ -22,7 +23,7 @@
 
         <div class="dashboard-links">
             <a href="/dashboard">Dashboard</a>
-            <a href="#">Find Skills</a>
+            <a href="/browse">Find Skills</a>
             <a href="#">Messages</a>
             <a href="#">Profile</a>
             <a href="/logout" class="logout-btn">Logout</a>
@@ -33,6 +34,7 @@
 
     <!-- MAIN DASHBOARD -->
     <main class="dashboard-container">
+
 
         <!-- WELCOME -->
         <section class="welcome-section">
@@ -60,7 +62,10 @@
 
             <div class="action-grid">
 
+
+                <!-- TEACH -->
                 <div class="dashboard-card">
+
                     <div class="card-icon">🎓</div>
 
                     <h3>Teach a Skill</h3>
@@ -70,11 +75,17 @@
                         learn a new skill.
                     </p>
 
-                    <button>Add My Skill</button>
+                    <a href="/add-skill"
+                       class="dashboard-card-button">
+                        Add My Skill
+                    </a>
+
                 </div>
 
 
+                <!-- FIND -->
                 <div class="dashboard-card">
+
                     <div class="card-icon">🔍</div>
 
                     <h3>Find a Skill</h3>
@@ -84,11 +95,17 @@
                         skills you want to learn.
                     </p>
 
-                    <button>Find Skills</button>
+                    <a href="/browse"
+                       class="dashboard-card-button">
+                        Find Skills
+                    </a>
+
                 </div>
 
 
+                <!-- SWAP -->
                 <div class="dashboard-card">
+
                     <div class="card-icon">🤝</div>
 
                     <h3>Skill Swap</h3>
@@ -98,7 +115,11 @@
                         person without exchanging money.
                     </p>
 
-                    <button>Start Swapping</button>
+                    <a href="/browse"
+                       class="dashboard-card-button">
+                        Start Swapping
+                    </a>
+
                 </div>
 
             </div>
@@ -110,9 +131,42 @@
         <section class="dashboard-section">
 
             <div class="section-title">
+
                 <h2>My Skills</h2>
-                <button class="add-button">+ Add Skill</button>
+
+                <a href="/add-skill"
+                   class="add-button">
+                    + Add Skill
+                </a>
+
             </div>
+
+
+            {% if session.get('skill') %}
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">💡</div>
+
+                <h3>{{ session.get('skill') }}</h3>
+
+                <p>
+                    <strong>Category:</strong>
+                    {{ session.get('category') }}
+                </p>
+
+                <p>
+                    <strong>Level:</strong>
+                    {{ session.get('level') }}
+                </p>
+
+                <p>
+                    {{ session.get('description') }}
+                </p>
+
+            </div>
+
+            {% else %}
 
             <div class="empty-card">
 
@@ -125,22 +179,31 @@
                     you can teach.
                 </p>
 
-                <button class="primary-button">
+                <a href="/add-skill"
+                   class="primary-button">
                     Add Your First Skill
-                </button>
+                </a>
 
             </div>
+
+            {% endif %}
 
         </section>
 
 
-        <!-- SKILLS TO LEARN -->
+        <!-- SKILLS I WANT TO LEARN -->
         <section class="dashboard-section">
 
             <div class="section-title">
+
                 <h2>Skills I Want to Learn</h2>
-                <button class="add-button">+ Add Skill</button>
+
+                <button class="add-button">
+                    + Add Skill
+                </button>
+
             </div>
+
 
             <div class="empty-card">
 
@@ -152,10 +215,6 @@
                     Add skills you want to learn and
                     we'll help you find a partner.
                 </p>
-
-                <button class="primary-button">
-                    Add Learning Goal
-                </button>
 
             </div>
 
@@ -185,4 +244,4 @@
     </main>
 
 </body>
-  </html>
+    </html>

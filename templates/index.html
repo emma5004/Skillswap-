@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillSwap - Home</title>
+    <title>SkillSwap - Exchange Skills</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -12,14 +11,33 @@
         <a href="/find-skills">Find Skills</a>
         <a href="/teach-skill">Teach</a>
         <a href="/browse">Browse</a>
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
+
+        <!-- THIS CHANGES BASED ON LOGIN -->
+        {% if user %}
+            <span style="color:white; padding:8px 15px; font-weight:bold;">Welcome, {{ user }}</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
+        {% endif %}
     </nav>
+
     <div class="container">
-        <h1>Welcome to SkillSwap! 🤝</h1>
-        <p>Exchange skills with people in your community.</p>
-        <p>Teach what you know, learn what you need.</p>
+        <h1>Welcome to SkillSwap</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <p style="background:#d4edda; padding:10px; border-radius:5px; color:#155724; margin-bottom:15px;">
+              {{ messages[0] }}
+            </p>
+          {% endif %}
+        {% endwith %}
+
+        <p>Exchange skills with people in your community. No money needed.</p>
+
         <a href="/find-skills" class="btn">Find Skills</a>
+        <a href="/teach-skill" class="btn">Teach a Skill</a>
+        <a href="/browse" class="btn">Browse All</a>
     </div>
 </body>
-</html>
+            </html>

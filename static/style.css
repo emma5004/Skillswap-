@@ -1,52 +1,117 @@
-body {
-    font-family: Arial, sans-serif;
+/* ===== CLASSIC SKILLSWAP THEME ===== */
+:root {
+    --bg-dark: #0f172a; /* deep navy - classic */
+    --bg-card: #1e293b; /* card background */
+    --accent: #3b82f6;  /* royal blue */
+    --accent-glow: #60a5fa; /* glow */
+    --text: #f8fafc; /* white text */
+    --text-muted: #94a3b8; /* grey text */
+}
+
+* {
     margin: 0;
-    background-color: #f0f8ff;
-    font-size: 16px; /* bigger text */
-}
-
-.container {
-    width: 95%; /* was 80%. Use more screen */
-    max-width: 600px; /* don't get too wide on desktop */
-    margin: 20px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-nav {
-    background: #007BFF;
-    padding: 10px;
-    display: flex;
-    flex-wrap: wrap; /* allow nav to wrap on small screens */
-    gap: 5px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 12px;
-    font-size: 14px;
-}
-
-.btn {
-    background: #007BFF;
-    color: white;
-    padding: 12px 20px; /* bigger button for finger */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-input, textarea, select {
-    width: 100%;
-    padding: 12px; /* bigger input */
-    margin: 8px 0;
-    font-size: 16px;
+    padding: 0;
     box-sizing: border-box;
 }
 
-h1 { font-size: 24px; }
-h2 { font-size: 20px; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); /* classic gradient */
+    color: var(--text);
+    min-height: 100vh;
+    background-attachment: fixed; /* background stays when scrolling */
+}
+
+/* ===== NAVBAR - CLASSIC GLASS ===== */
+.navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(30, 41, 59, 0.7); /* glass effect */
+    backdrop-filter: blur(10px); /* frosted glass */
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar a {
+    color: var(--text);
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.navbar a:hover {
+    background: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow); /* glow on hover */
+}
+
+/* ===== CARDS - LIKE PREMIUM PROFILE CARDS ===== */
+.card {
+    background: var(--bg-card);
+    border: 1px solid rgba(59, 130, 246, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+}
+
+/* ===== BUTTONS - CLASSIC GLOW ===== */
+button, .btn {
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    color: white;
+    width: 100%;
+    max-width: 320px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+button:hover, .btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 25px rgba(96, 165, 250, 0.5);
+}
+
+/* ===== TEXT ===== */
+h1, h2, h3 {
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (min-width: 768px) {
+    .navbar {
+        justify-content: space-around;
+        gap: 20px;
+    }
+    .navbar a {
+        font-size: 16px;
+    }
+    .card {
+        max-width: 600px;
+        margin: 20px auto;
+    }
+    }

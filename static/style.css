@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
+    background: linear-gradient(180deg, #e8f4ff 0%, #ffffff 100%);
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -13,51 +13,55 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
+    padding: 20px;
 }
 
 .card {
     background: white;
-    padding: 30px 25px;
+    padding: 35px 30px;
     border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     text-align: center;
     width: 90%;
-    max-width: 400px;
+    max-width: 380px;
 }
 
 .logo img {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     margin-bottom: 15px;
 }
 
 h1 {
-    color: #2196f3;
-    margin: 10px 0 5px 0;
-    font-size: 28px;
+    color: #1a73e8;
+    margin: 5px 0 8px 0;
+    font-size: 30px;
+    font-weight: 700;
 }
 
 p {
-    color: #555;
-    margin-bottom: 25px;
+    color: #5f6368;
+    margin-bottom: 30px;
+    font-size: 15px;
 }
 
 .btn {
     display: block;
     color: white;
     padding: 14px;
-    border-radius: 12px;
+    border-radius: 10px;
     text-decoration: none;
     margin: 12px 0;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 16px;
+    border: none;
 }
 
-.btn-blue { background: #2196f3; }
-.btn-blue:hover { background: #1976d2; }
+.btn-login { background: #1a73e8; }
+.btn-login:hover { background: #1557b0; }
 
-.btn-green { background: #4caf50; }
-.btn-green:hover { background: #388e3c; }
+.btn-signup { background: #34a853; }
+.btn-signup:hover { background: #2d9148; }
 
 footer {
     position: fixed;
@@ -65,5 +69,6 @@ footer {
     text-align: center;
     width: 100%;
     color: #777;
-    font-size: 14px;
+    font-size: 13px;
+    left: 0;
     }

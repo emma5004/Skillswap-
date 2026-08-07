@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat - SkillSwap</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/browse">Browse</a>
+        <a href="/teach-skill">Teach</a>
+        <a href="/inbox">Inbox</a>
+        {% if user %}
+            <span style="color:white; padding:8px 15px; font-weight:bold;">Welcome, {{ user }}</span>
+            <a href="/logout">Logout</a>
+        {% endif %}
+    </nav>
 
+    <div class="container">
+        <h1>Chat with {{ receiver }}</h1>
+
+        <!-- Chat Messages Box -->
+        <div style="height:400px; overflow-y:scroll; border:1px solid #ccc; padding:10px; background:#e5ddd5; border-radius:8px; margin-bottom:10px;">
+            {% for msg in messages %}
+                <div style="text-align:{% if msg[1]==my_email %}right{% else %}left{% endif %}; margin:8px 0;">
+                    <span style="background:{% if msg[1]==my_email %}#dcf8c6{% else %}white{% endif %}; padding:8px 12px; border-radius:10px; display:inline-block; max-width:70%; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
+                        {{ msg[3] }}<br>
+                        <small style="font-size:10px; color:gray;">{{ msg[4] }}</small>
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Send Message Form -->
+        <form method="POST" style="display:flex; gap:10px;">
+            <input type="text" name="message" placeholder="Type a message..." required style="flex:1; padding:10px;">
+            <button type="submit" class="btn">Send</button>
+        </form>
+    </div>
+</body>
+  </html>

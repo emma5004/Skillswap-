@@ -14,7 +14,7 @@ def init_db():
                   name TEXT NOT NULL,
                   email TEXT UNIQUE NOT NULL,
                   password TEXT NOT NULL)''')
-    # Skills table NEW!
+    # Skills table
     c.execute('''CREATE TABLE IF NOT EXISTS skills
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   skill_name TEXT NOT NULL,
@@ -42,22 +42,27 @@ def teach_skill():
         category = request.form['category']
         location = request.form['location']
         description = request.form['description']
-        user_email = "guest@skillswap.com" # Later we’ll use real logged in user
-        
+        user_email = "guest@skillswap.com" # We'll connect this to real login next
+
         conn = sqlite3.connect('skillswap.db')
         c = conn.cursor()
-        c.execute("INSERT INTO skills (skill_name, category, location, description, user_email) VALUES (?,?,?,?,?)", 
+        c.execute("INSERT INTO skills (skill_name, category, location, description, user_email) VALUES (?,?,?,?,?)",
                   (skill_name, category, location, description, user_email))
         conn.commit()
         conn.close()
         flash('Skill posted successfully!')
         return redirect(url_for('browse'))
-    
+
     return render_template('teach-skill.html')
 
 @app.route('/browse')
 def browse():
-    return render_template('browse.html')
+    conn = sqlite3.connect('skillswap.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM skills ORDER BY id DESC")
+    skills = c.fetchall()
+    conn.close()
+    return render_template('browse.html', skills=skills)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -85,7 +90,7 @@ def signup():
         try:
             conn = sqlite3.connect('skillswap.db')
             c = conn.cursor()
-            c.execute("INSERT INTO users (name, email, password) VALUES (?,?,?)", 
+            c.execute("INSERT INTO users (name, email, password) VALUES (?,?,?)",
                       (name, email, password))
             conn.commit()
             conn.close()

@@ -75,6 +75,23 @@ def add_skill():
         level = request.form.get('level')
         description = request.form.get('description')
 
+        # Save the skill temporarily
+        session['skill'] = skill
+        session['category'] = category
+        session['level'] = level
+        session['description'] = description
+
+        return redirect('/dashboard')
+
+    return render_template('teach_skill.html')
+
+    if request.method == 'POST':
+
+        skill = request.form.get('skill')
+        category = request.form.get('category')
+        level = request.form.get('level')
+        description = request.form.get('description')
+
         # For now, we'll display the skill on the dashboard later.
         return redirect('/dashboard')
 

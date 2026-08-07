@@ -189,35 +189,67 @@
 
         </section>
 
+ 
+    <!-- SKILLS I WANT TO LEARN -->
+<section class="dashboard-section">
 
-        <!-- SKILLS I WANT TO LEARN -->
-        <section class="dashboard-section">
+    <div class="section-title">
 
-            <div class="section-title">
+        <h2>Skills I Want to Learn</h2>
 
-                <h2>Skills I Want to Learn</h2>
+        <a href="/learn-skill" class="add-button">
+            + Add Skill
+        </a>
 
-                <button class="add-button">
-                    + Add Skill
-                </button>
-
-            </div>
+    </div>
 
 
-            <div class="empty-card">
+    {% if session.get('learning_skill') %}
 
-                <div class="empty-icon">📚</div>
+    <div class="dashboard-card">
 
-                <h3>No learning goals yet</h3>
+        <div class="card-icon">📚</div>
 
-                <p>
-                    Add skills you want to learn and
-                    we'll help you find a partner.
-                </p>
+        <h3>{{ session.get('learning_skill') }}</h3>
 
-            </div>
+        <p>
+            <strong>Category:</strong>
+            {{ session.get('learning_category') }}
+        </p>
 
-        </section>
+        <p>
+            <strong>Level:</strong>
+            {{ session.get('learning_level') }}
+        </p>
+
+        <p>
+            {{ session.get('learning_description') }}
+        </p>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-card">
+
+        <div class="empty-icon">📚</div>
+
+        <h3>No learning goals yet</h3>
+
+        <p>
+            Add skills you want to learn and
+            we'll help you find a partner.
+        </p>
+
+        <a href="/learn-skill" class="primary-button">
+            Add Learning Goal
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
 
 
         <!-- SWAP REQUESTS -->

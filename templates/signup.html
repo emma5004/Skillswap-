@@ -3,51 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Sign Up | Skill Swap</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body class="auth-page">
 
     <div class="auth-container">
 
+        <!-- LOGO -->
         <div class="auth-logo">
-            <div class="logo-circle">SS</div>
+
+            <div class="logo-circle">
+                SS
+            </div>
+
             <h1>Skill Swap</h1>
+
             <p>Learn. Teach. Connect.</p>
+
         </div>
 
-        <div class="auth-box">
-            <h2>Create Account</h2>
-            <p class="auth-subtitle">Join Skill Swap and start sharing your skills.</p>
 
+        <!-- SIGN UP BOX -->
+        <div class="auth-box">
+
+            <h2>Create Account</h2>
+
+            <p class="auth-subtitle">
+                Join Skill Swap and start sharing your skills.
+            </p>
+
+
+            <!-- SIGN UP FORM -->
             <form method="POST" action="/signup">
 
-                <label>Full Name</label>
-                <input type="text" name="name" placeholder="Enter your full name" required>
+                <label for="name">
+                    Full Name
+                </label>
 
-                <label>Email Address</label>
-                <input type="email" name="email" placeholder="Enter your email" required>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your full name"
+                    required
+                >
 
-                <label>Password</label>
-                <input type="password" name="password" placeholder="Create a password" required>
 
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" placeholder="Confirm your password" required>
+                <label for="email">
+                    Email Address
+                </label>
 
-                <button type="submit" class="auth-button">Create Account</button>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+
+
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    placeholder="Confirm your password"
+                    required
+                >
+
+
+                <button type="submit" class="auth-button">
+                    Create Account
+                </button>
 
             </form>
 
+
+            <!-- LOGIN LINK -->
             <p class="switch-page">
+
                 Already have an account?
-                <a href="/login">Login</a>
+
+                <a href="/login">
+                    Login
+                </a>
+
             </p>
+
         </div>
 
-        <a href="/" class="back-home">← Back to Home</a>
+
+        <!-- BACK HOME -->
+        <a href="/" class="back-home">
+            ← Back to Home
+        </a>
 
     </div>
 
 </body>
-            </html>
+    </html>

@@ -1,26 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card">
-    <h2>Find Skills</h2>
-    <p>Top skills available now:</p>
-</div>
+<div class="container">
+    <h1>Browse Skills</h1>
+    <p style="margin-bottom:25px;">Find people to learn from</p>
 
-<div class="card">
-    <h3>📱 Graphic Design</h3>
-    <p>Teacher: Ada | Location: PH | ₦5000/hr</p>
-    <button class="btn">Contact Teacher</button>
-</div>
+    {% for skill in skills %}
+    <div style="background:#f8fafc; padding:20px; border-radius:12px; margin-bottom:15px; text-align:left;">
+        <h3 style="color:#1e293b; margin-bottom:8px;">{{ skill.title }}</h3>
+        <p style="color:#64748b; font-size:14px; margin-bottom:15px;">{{ skill.description }}</p>
+        <a href="/request/{{ skill.id }}" class="btn" style="background:#22c55e; font-size:14px; padding:10px;">Request Skill</a>
+    </div>
+    {% endfor %}
 
-<div class="card">
-    <h3>💻 Web Development</h3>
-    <p>Teacher: Izu | Location: Online | ₦8000/hr</p>
-    <button class="btn">Contact Teacher</button>
-</div>
-
-<div class="card">
-    <h3>🎤 Music Production</h3>
-    <p>Teacher: Daniel | Location: PH | ₦6000/hr</p>
-    <button class="btn">Contact Teacher</button>
+    {% if skills|length == 0 %}
+    <p>No skills yet. <a href="/add-skill" style="color:#3b82f6;">Add the first one</a></p>
+    {% endif %}
 </div>
 {% endblock %}

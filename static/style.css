@@ -67,3 +67,17 @@ footer {
     color: #64748b; 
     font-size: 14px; 
     }
+@media (max-width: 600px) {
+    nav {
+        gap: 10px;
+        top: 10px;
+    }
+    nav a {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+    .container {
+        padding: 25px 20px;
+        margin: 10px;
+    }
+        }

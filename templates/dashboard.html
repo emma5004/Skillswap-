@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Skill Swap</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- TOP NAVIGATION -->
+    <nav class="dashboard-nav">
+
+        <div class="dashboard-logo">
+            <div class="small-logo">SS</div>
+            <span>Skill Swap</span>
+        </div>
+
+        <div class="dashboard-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="#">Find Skills</a>
+            <a href="#">Messages</a>
+            <a href="#">Profile</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN DASHBOARD -->
+    <main class="dashboard-container">
+
+        <!-- WELCOME -->
+        <section class="welcome-section">
+
+            <div>
+                <h1>Welcome to Skill Swap 👋</h1>
+
+                <p>
+                    Connect with people, exchange knowledge,
+                    and learn something new.
+                </p>
+            </div>
+
+            <button class="profile-button">
+                Complete Profile
+            </button>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+        <section class="dashboard-section">
+
+            <h2>What would you like to do?</h2>
+
+            <div class="action-grid">
+
+                <div class="dashboard-card">
+                    <div class="card-icon">🎓</div>
+
+                    <h3>Teach a Skill</h3>
+
+                    <p>
+                        Share what you know and help someone
+                        learn a new skill.
+                    </p>
+
+                    <button>Add My Skill</button>
+                </div>
+
+
+                <div class="dashboard-card">
+                    <div class="card-icon">🔍</div>
+
+                    <h3>Find a Skill</h3>
+
+                    <p>
+                        Find people who can teach you the
+                        skills you want to learn.
+                    </p>
+
+                    <button>Find Skills</button>
+                </div>
+
+
+                <div class="dashboard-card">
+                    <div class="card-icon">🤝</div>
+
+                    <h3>Skill Swap</h3>
+
+                    <p>
+                        Exchange your skills with another
+                        person without exchanging money.
+                    </p>
+
+                    <button>Start Swapping</button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MY SKILLS -->
+        <section class="dashboard-section">
+
+            <div class="section-title">
+                <h2>My Skills</h2>
+                <button class="add-button">+ Add Skill</button>
+            </div>
+
+            <div class="empty-card">
+
+                <div class="empty-icon">💡</div>
+
+                <h3>No skills added yet</h3>
+
+                <p>
+                    Tell the Skill Swap community what
+                    you can teach.
+                </p>
+
+                <button class="primary-button">
+                    Add Your First Skill
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- SKILLS TO LEARN -->
+        <section class="dashboard-section">
+
+            <div class="section-title">
+                <h2>Skills I Want to Learn</h2>
+                <button class="add-button">+ Add Skill</button>
+            </div>
+
+            <div class="empty-card">
+
+                <div class="empty-icon">📚</div>
+
+                <h3>No learning goals yet</h3>
+
+                <p>
+                    Add skills you want to learn and
+                    we'll help you find a partner.
+                </p>
+
+                <button class="primary-button">
+                    Add Learning Goal
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- SWAP REQUESTS -->
+        <section class="dashboard-section">
+
+            <h2>My Swap Requests</h2>
+
+            <div class="empty-card">
+
+                <div class="empty-icon">🤝</div>
+
+                <h3>No swap requests</h3>
+
+                <p>
+                    When you connect with another person,
+                    your swap requests will appear here.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+  </html>

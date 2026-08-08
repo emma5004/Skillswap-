@@ -1,20 +1,158 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<div class="container">
-    <h1>Browse Skills</h1>
-    <p style="margin-bottom:25px;">Find people to learn from</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {% for skill in skills %}
-    <div style="background:#f8fafc; padding:20px; border-radius:12px; margin-bottom:15px; text-align:left;">
-        <h3 style="color:#1e293b; margin-bottom:8px;">{{ skill.title }}</h3>
-        <p style="color:#64748b; font-size:14px; margin-bottom:15px;">{{ skill.description }}</p>
-        <a href="/request/{{ skill.id }}" class="btn" style="background:#22c55e; font-size:14px; padding:10px;">Request Skill</a>
-    </div>
-    {% endfor %}
+    <title>Find Skills | Skill Swap</title>
 
-    {% if skills|length == 0 %}
-    <p>No skills yet. <a href="/add-skill" style="color:#3b82f6;">Add the first one</a></p>
-    {% endif %}
-</div>
-{% endblock %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- NAVIGATION -->
+    <nav class="dashboard-nav">
+
+        <div class="dashboard-logo">
+            <div class="small-logo">SS</div>
+            <span>Skill Swap</span>
+        </div>
+
+        <div class="dashboard-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/browse">Find Skills</a>
+            <a href="#">Messages</a>
+            <a href="#">Profile</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <!-- FIND SKILLS -->
+    <main class="dashboard-container">
+
+        <section class="welcome-section">
+
+            <div>
+                <h1>Find a Skill 🔍</h1>
+
+                <p>
+                    Find people who can teach you the skills
+                    you want to learn.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- SEARCH -->
+        <section class="dashboard-section">
+
+            <div class="empty-card">
+
+                <h2>What do you want to learn?</h2>
+
+                <p>
+                    Search for a skill and find someone
+                    who can teach you.
+                </p>
+
+                <form action="/browse" method="GET">
+
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="e.g. Video Editing"
+                        style="width:80%; padding:14px; border:1px solid #ddd; border-radius:8px;"
+                    >
+
+                    <button
+                        type="submit"
+                        class="primary-button">
+                        Search
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- AVAILABLE SKILLS -->
+        <section class="dashboard-section">
+
+            <h2>Popular Skills</h2>
+
+            <div class="action-grid">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">🎨</div>
+
+                    <h3>Graphic Design</h3>
+
+                    <p>
+                        Learn graphic design from someone
+                        who already has the skill.
+                    </p>
+
+                    <button class="dashboard-card-button">
+                        View Skill
+                    </button>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">🎬</div>
+
+                    <h3>Video Editing</h3>
+
+                    <p>
+                        Find someone who can teach you
+                        video editing.
+                    </p>
+
+                    <button class="dashboard-card-button">
+                        View Skill
+                    </button>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">💻</div>
+
+                    <h3>Web Development</h3>
+
+                    <p>
+                        Learn how to create websites and
+                        applications.
+                    </p>
+
+                    <button class="dashboard-card-button">
+                        View Skill
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <a href="/dashboard" class="back-home">
+            ← Back to Dashboard
+        </a>
+
+    </main>
+
+</body>
+    </html>

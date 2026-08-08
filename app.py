@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, send_from_directory
 import os
 from werkzeug.utils import secure_filename
 
@@ -6,11 +6,12 @@ app = Flask(__name__)
 
 app.secret_key = "skill_swap_secret_key"
 
-# Folder for profile pictures
+# Profile picture folder
 UPLOAD_FOLDER = "uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# Allowed image types
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
 
@@ -24,57 +25,61 @@ def allowed_file(filename):
 # =========================
 # HOME
 # =========================
-@app.route('/')
+
+@app.route("/")
 def home():
-    return render_template('home.html')
+    return render_template("home.html")
 
 
 # =========================
 # LOGIN
 # =========================
-@app.route('/login', methods=['GET', 'POST'])
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        email = request.form.get('email')
+        email = request.form.get("email")
 
-        session['email'] = email
+        session["email"] = email
 
-        return redirect('/dashboard')
+        return redirect("/dashboard")
 
-    return render_template('login.html')
+    return render_template("login.html")
 
 
 # =========================
 # SIGN UP
 # =========================
-@app.route('/signup', methods=['GET', 'POST'])
+
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        name = request.form.get('name')
-        email = request.form.get('email')
+        name = request.form.get("name")
+        email = request.form.get("email")
 
-        session['name'] = name
-        session['email'] = email
+        session["name"] = name
+        session["email"] = email
 
-        return redirect('/dashboard')
+        return redirect("/dashboard")
 
-    return render_template('signup.html')
+    return render_template("signup.html")
 
 
 # =========================
 # DASHBOARD
 # =========================
-@app.route('/dashboard')
+
+@app.route("/dashboard")
 def dashboard():
 
-    name = session.get('name', 'Skill Swapper')
+    name = session.get("name", "Skill Swapper")
 
     return render_template(
-        'dashboard.html',
+        "dashboard.html",
         name=name
     )
 
@@ -82,128 +87,134 @@ def dashboard():
 # =========================
 # BROWSE SKILLS
 # =========================
-@app.route('/browse')
+
+@app.route("/browse")
 def browse():
-    return render_template('browse.html')
+    return render_template("browse.html")
 
 
 # =========================
 # ADD SKILL I CAN TEACH
 # =========================
-@app.route('/add-skill', methods=['GET', 'POST'])
+
+@app.route("/add-skill", methods=["GET", "POST"])
 def add_skill():
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        skill = request.form.get('skill')
-        category = request.form.get('category')
-        level = request.form.get('level')
-        description = request.form.get('description')
+        session["skill"] = request.form.get("skill")
+        session["category"] = request.form.get("category")
+        session["level"] = request.form.get("level")
+        session["description"] = request.form.get("description")
 
-        session['skill'] = skill
-        session['category'] = category
-        session['level'] = level
-        session['description'] = description
+        return redirect("/dashboard")
 
-        return redirect('/dashboard')
-
-    return render_template('teach_skill.html')
+    return render_template("teach_skill.html")
 
 
 # =========================
 # ADD SKILL I WANT TO LEARN
 # =========================
-@app.route('/learn-skill', methods=['GET', 'POST'])
+
+@app.route("/learn-skill", methods=["GET", "POST"])
 def learn_skill():
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        skill = request.form.get('skill')
-        category = request.form.get('category')
-        level = request.form.get('level')
-        description = request.form.get('description')
+        session["learning_skill"] = request.form.get("skill")
+        session["learning_category"] = request.form.get("category")
+        session["learning_level"] = request.form.get("level")
+        session["learning_description"] = request.form.get("description")
 
-        session['learning_skill'] = skill
-        session['learning_category'] = category
-        session['learning_level'] = level
-        session['learning_description'] = description
+        return redirect("/dashboard")
 
-        return redirect('/dashboard')
-
-    return render_template('learn_skill.html')
+    return render_template("learn_skill.html")
 
 
 # =========================
 # PROFILE
 # =========================
-@app.route('/profile')
+
+@app.route("/profile")
 def profile():
 
-    name = session.get('name', 'Skill Swapper')
+    name = session.get("name", "Skill Swapper")
 
     return render_template(
-        'profile.html',
+        "profile.html",
         name=name
     )
+
 
 # =========================
 # EDIT PROFILE
 # =========================
-@app.route('/edit-profile', methods=['GET', 'POST'])
+
+@app.route("/edit-profile", methods=["GET", "POST"])
 def edit_profile():
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        session['name'] = request.form.get('name', '')
-        session['email'] = request.form.get('email', '')
-        session['about'] = request.form.get('about', '')
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        about = request.form.get("about", "").strip()
 
-        return redirect('/profile')
+        session["name"] = name
+        session["email"] = email
+        session["about"] = about
 
-    return render_template('edit_profile.html')
+        return redirect("/profile")
+
+    return render_template("edit_profile.html")
+
+
 # =========================
 # UPLOAD PROFILE PICTURE
 # =========================
-@app.route('/upload-profile-picture', methods=['POST'])
+
+@app.route("/upload-profile-picture", methods=["POST"])
 def upload_profile_picture():
 
-    if 'profile_picture' not in request.files:
-        return redirect('/profile')
+    if "profile_picture" not in request.files:
+        return redirect("/profile")
 
-    file = request.files['profile_picture']
+    file = request.files["profile_picture"]
 
-    if file.filename == '':
-        return redirect('/profile')
+    if file.filename == "":
+        return redirect("/profile")
 
-    if file and allowed_file(file.filename):
+    if not allowed_file(file.filename):
+        return redirect("/profile")
 
-        filename = secure_filename(file.filename)
+    filename = secure_filename(file.filename)
 
-        # Give the file a simple user-specific name
-        filename = "profile_" + filename
+    # Give the picture a unique name
+    email = session.get("email", "user")
+    safe_email = secure_filename(email)
 
-        file.save(
-            os.path.join(
-                app.config['UPLOAD_FOLDER'],
-                filename
-            )
+    filename = "profile_" + safe_email + "_" + filename
+
+    file.save(
+        os.path.join(
+            app.config["UPLOAD_FOLDER"],
+            filename
         )
+    )
 
-        session['profile_picture'] = filename
+    session["profile_picture"] = filename
 
-    return redirect('/profile')
+    return redirect("/profile")
 
 
 # =========================
-# SERVE UPLOADED PICTURES
+# SHOW PROFILE PICTURES
 # =========================
-@app.route('/uploads/<filename>')
+
+@app.route("/uploads/<filename>")
 def uploaded_file(filename):
 
-    from flask import send_from_directory
-
     return send_from_directory(
-        app.config['UPLOAD_FOLDER'],
+        app.config["UPLOAD_FOLDER"],
         filename
     )
 
@@ -211,16 +222,18 @@ def uploaded_file(filename):
 # =========================
 # LOGOUT
 # =========================
-@app.route('/logout')
+
+@app.route("/logout")
 def logout():
 
     session.clear()
 
-    return redirect('/')
+    return redirect("/")
 
 
 # =========================
-# START FLASK
+# START APP
 # =========================
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run(debug=True)

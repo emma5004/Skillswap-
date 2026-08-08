@@ -1,9 +1,24 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-# Secret key
 app.secret_key = "skill_swap_secret_key"
+
+# Folder for profile pictures
+UPLOAD_FOLDER = "uploads"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+# Allowed image types
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+
+
+def allowed_file(filename):
+    return (
+        "." in filename
+        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    )
 
 
 # =========================
@@ -116,6 +131,67 @@ def learn_skill():
         return redirect('/dashboard')
 
     return render_template('learn_skill.html')
+
+
+# =========================
+# PROFILE
+# =========================
+@app.route('/profile')
+def profile():
+
+    name = session.get('name', 'Skill Swapper')
+
+    return render_template(
+        'profile.html',
+        name=name
+    )
+
+
+# =========================
+# UPLOAD PROFILE PICTURE
+# =========================
+@app.route('/upload-profile-picture', methods=['POST'])
+def upload_profile_picture():
+
+    if 'profile_picture' not in request.files:
+        return redirect('/profile')
+
+    file = request.files['profile_picture']
+
+    if file.filename == '':
+        return redirect('/profile')
+
+    if file and allowed_file(file.filename):
+
+        filename = secure_filename(file.filename)
+
+        # Give the file a simple user-specific name
+        filename = "profile_" + filename
+
+        file.save(
+            os.path.join(
+                app.config['UPLOAD_FOLDER'],
+                filename
+            )
+        )
+
+        session['profile_picture'] = filename
+
+    return redirect('/profile')
+
+
+# =========================
+# SERVE UPLOADED PICTURES
+# =========================
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+
+    from flask import send_from_directory
+
+    return send_from_directory(
+        app.config['UPLOAD_FOLDER'],
+        filename
+    )
 
 
 # =========================

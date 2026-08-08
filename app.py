@@ -154,13 +154,9 @@ def edit_profile():
 
     if request.method == 'POST':
 
-        name = request.form.get('name')
-        email = request.form.get('email')
-        about = request.form.get('about')
-
-        session['name'] = name
-        session['email'] = email
-        session['about'] = about
+        session['name'] = request.form.get('name', '')
+        session['email'] = request.form.get('email', '')
+        session['about'] = request.form.get('about', '')
 
         return redirect('/profile')
 

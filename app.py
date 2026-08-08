@@ -146,7 +146,25 @@ def profile():
         name=name
     )
 
+# =========================
+# EDIT PROFILE
+# =========================
+@app.route('/edit-profile', methods=['GET', 'POST'])
+def edit_profile():
 
+    if request.method == 'POST':
+
+        name = request.form.get('name')
+        email = request.form.get('email')
+        about = request.form.get('about')
+
+        session['name'] = name
+        session['email'] = email
+        session['about'] = about
+
+        return redirect('/profile')
+
+    return render_template('edit_profile.html')
 # =========================
 # UPLOAD PROFILE PICTURE
 # =========================

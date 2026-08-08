@@ -150,20 +150,8 @@ def profile():
 # EDIT PROFILE
 # =========================
 
-@app.route("/edit-profile", methods=["GET", "POST"])
+@app.route("/edit-profile")
 def edit_profile():
-
-    if request.method == "POST":
-
-        name = request.form.get("name", "").strip()
-        email = request.form.get("email", "").strip()
-        about = request.form.get("about", "").strip()
-
-        session["name"] = name
-        session["email"] = email
-        session["about"] = about
-
-        return redirect("/profile")
 
     return render_template("edit_profile.html")
 

@@ -6,8 +6,12 @@ app = Flask(__name__)
 
 app.secret_key = "skill_swap_secret_key"
 
-# Profile picture folder
+# =========================
+# UPLOAD SETTINGS
+# =========================
+
 UPLOAD_FOLDER = "uploads"
+
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -16,9 +20,11 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
 
 def allowed_file(filename):
+
     return (
         "." in filename
-        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+        and filename.rsplit(".", 1)[1].lower()
+        in ALLOWED_EXTENSIONS
     )
 
 
@@ -28,6 +34,7 @@ def allowed_file(filename):
 
 @app.route("/")
 def home():
+
     return render_template("home.html")
 
 
@@ -40,7 +47,7 @@ def login():
 
     if request.method == "POST":
 
-        email = request.form.get("email")
+        email = request.form.get("email", "").strip()
 
         session["email"] = email
 
@@ -58,8 +65,8 @@ def signup():
 
     if request.method == "POST":
 
-        name = request.form.get("name")
-        email = request.form.get("email")
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
 
         session["name"] = name
         session["email"] = email
@@ -85,11 +92,12 @@ def dashboard():
 
 
 # =========================
-# BROWSE SKILLS
+# FIND SKILLS
 # =========================
 
 @app.route("/browse")
 def browse():
+
     return render_template("browse.html")
 
 
@@ -102,10 +110,10 @@ def add_skill():
 
     if request.method == "POST":
 
-        session["skill"] = request.form.get("skill")
-        session["category"] = request.form.get("category")
-        session["level"] = request.form.get("level")
-        session["description"] = request.form.get("description")
+        session["skill"] = request.form.get("skill", "")
+        session["category"] = request.form.get("category", "")
+        session["level"] = request.form.get("level", "")
+        session["description"] = request.form.get("description", "")
 
         return redirect("/dashboard")
 
@@ -121,10 +129,10 @@ def learn_skill():
 
     if request.method == "POST":
 
-        session["learning_skill"] = request.form.get("skill")
-        session["learning_category"] = request.form.get("category")
-        session["learning_level"] = request.form.get("level")
-        session["learning_description"] = request.form.get("description")
+        session["learning_skill"] = request.form.get("skill", "")
+        session["learning_category"] = request.form.get("category", "")
+        session["learning_level"] = request.form.get("level", "")
+        session["learning_description"] = request.form.get("description", "")
 
         return redirect("/dashboard")
 
@@ -150,8 +158,20 @@ def profile():
 # EDIT PROFILE
 # =========================
 
-@app.route("/edit-profile")
+@app.route("/edit-profile", methods=["GET", "POST"])
 def edit_profile():
+
+    if request.method == "POST":
+
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        about = request.form.get("about", "").strip()
+
+        session["name"] = name
+        session["email"] = email
+        session["about"] = about
+
+        return redirect("/profile")
 
     return render_template("edit_profile.html")
 
@@ -164,20 +184,23 @@ def edit_profile():
 def upload_profile_picture():
 
     if "profile_picture" not in request.files:
+
         return redirect("/profile")
 
     file = request.files["profile_picture"]
 
     if file.filename == "":
+
         return redirect("/profile")
 
     if not allowed_file(file.filename):
+
         return redirect("/profile")
 
     filename = secure_filename(file.filename)
 
-    # Give the picture a unique name
     email = session.get("email", "user")
+
     safe_email = secure_filename(email)
 
     filename = "profile_" + safe_email + "_" + filename
@@ -195,7 +218,7 @@ def upload_profile_picture():
 
 
 # =========================
-# SHOW PROFILE PICTURES
+# SHOW PROFILE PICTURE
 # =========================
 
 @app.route("/uploads/<filename>")
@@ -214,14 +237,18 @@ def uploaded_file(filename):
 @app.route("/logout")
 def logout():
 
-    session.clear()
+    # Keep the uploaded picture and profile information
+    # for this temporary version.
+    session.pop("email", None)
+    session.pop("name", None)
 
     return redirect("/")
 
 
 # =========================
-# START APP
+# START FLASK
 # =========================
 
 if __name__ == "__main__":
+
     app.run(debug=True)

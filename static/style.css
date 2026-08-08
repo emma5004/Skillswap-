@@ -657,3 +657,17 @@ body {
 .upload-button:hover {
     background: #dce7ff;
     }
+.profile-button {
+    display: inline-block;
+    background: #1746a2;
+    color: white;
+    padding: 13px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+}
+
+.profile-button:hover {
+    background: #10357d;
+        }

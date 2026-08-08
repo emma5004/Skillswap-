@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | Skill Swap</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="dashboard-page">
+
+    <!-- NAVIGATION -->
+    <nav class="dashboard-nav">
+
+        <div class="dashboard-logo">
+            <div class="small-logo">SS</div>
+            <span>Skill Swap</span>
+        </div>
+
+        <div class="dashboard-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/browse">Find Skills</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <!-- PROFILE -->
+    <main class="dashboard-container">
+
+        <section class="welcome-section">
+
+            <div>
+                <h1>My Profile 👤</h1>
+
+                <p>
+                    Manage your Skill Swap profile and
+                    tell people more about yourself.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- PROFILE INFORMATION -->
+        <section class="dashboard-section">
+
+            <div class="dashboard-card profile-card">
+
+                <!-- PROFILE PICTURE -->
+
+                <div class="profile-picture-container">
+
+                    {% if session.get('profile_picture') %}
+
+                        <img
+                            src="{{ url_for(
+                                'uploaded_file',
+                                filename=session.get('profile_picture')
+                            ) }}"
+                            class="profile-picture"
+                            alt="Profile Picture"
+                        >
+
+                    {% else %}
+
+                        <div class="profile-picture-placeholder">
+                            👤
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- UPLOAD FORM -->
+
+                <form
+                    action="/upload-profile-picture"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="profile-upload-form"
+                >
+
+                    <label for="profile_picture"
+                           class="upload-button">
+
+                        Choose Profile Picture
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="profile_picture"
+                        name="profile_picture"
+                        accept="image/png, image/jpeg, image/jpg, image/gif"
+                        required
+                        hidden
+                    >
+
+                    <button
+                        type="submit"
+                        class="dashboard-card-button"
+                    >
+                        Upload Picture
+                    </button>
+
+                </form>
+
+
+                <h2>{{ name }}</h2>
+
+                <p>
+                    <strong>Email:</strong>
+                    {{ session.get('email', 'No email available') }}
+                </p>
+
+                <p>
+                    Welcome to Skill Swap! Complete your
+                    profile so other users can know more
+                    about you.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- MY SKILL -->
+
+        <section class="dashboard-section">
+
+            <h2>What I Can Teach 🎓</h2>
+
+            {% if session.get('skill') %}
+
+            <div class="dashboard-card">
+
+                <h3>{{ session.get('skill') }}</h3>
+
+                <p>
+                    Category:
+                    {{ session.get('category') }}
+                </p>
+
+                <p>
+                    Level:
+                    {{ session.get('level') }}
+                </p>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-card">
+
+                <div class="empty-icon">🎓</div>
+
+                <h3>No skill added yet</h3>
+
+                <p>
+                    Add a skill you can teach to the
+                    Skill Swap community.
+                </p>
+
+                <a href="/add-skill"
+                   class="primary-button">
+                    Add My Skill
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- LEARNING GOAL -->
+
+        <section class="dashboard-section">
+
+            <h2>What I Want to Learn 📚</h2>
+
+            {% if session.get('learning_skill') %}
+
+            <div class="dashboard-card">
+
+                <h3>
+                    {{ session.get('learning_skill') }}
+                </h3>
+
+                <p>
+                    Category:
+                    {{ session.get('learning_category') }}
+                </p>
+
+                <p>
+                    Level:
+                    {{ session.get('learning_level') }}
+                </p>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-card">
+
+                <div class="empty-icon">📚</div>
+
+                <h3>No learning goal added yet</h3>
+
+                <p>
+                    Add a skill you want to learn.
+                </p>
+
+                <a href="/learn-skill"
+                   class="primary-button">
+                    Add Learning Goal
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <a href="/dashboard" class="back-home">
+            ← Back to Dashboard
+        </a>
+
+    </main>
+
+</body>
+                      </html>

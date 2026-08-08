@@ -1,16 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Edit Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile | Skill Swap</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body>
+<body class="dashboard-page">
 
-    <h1>Edit Profile</h1>
+    <nav class="dashboard-nav">
 
-    <p>If you can see this page, Flask is loading edit_profile.html correctly.</p>
+        <div class="dashboard-logo">
+            <div class="small-logo">SS</div>
+            <span>Skill Swap</span>
+        </div>
 
-    <a href="/profile">Back to Profile</a>
+        <div class="dashboard-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/browse">Find Skills</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <main class="dashboard-container">
+
+        <div class="dashboard-card">
+
+            <h1>Edit Your Profile</h1>
+
+            <form method="POST">
+
+                <label>Full Name</label>
+
+                <input
+                    type="text"
+                    name="name"
+                    value="{{ name }}"
+                    required
+                >
+
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    value="{{ email }}"
+                    required
+                >
+
+
+                <label>About Me</label>
+
+                <textarea
+                    name="about"
+                    rows="5"
+                    placeholder="Tell people about yourself..."
+                >{{ about }}</textarea>
+
+
+                <button
+                    type="submit"
+                    class="dashboard-card-button"
+                >
+                    Save Changes
+                </button>
+
+            </form>
+
+            <br>
+
+            <a href="/profile">
+                ← Back to Profile
+            </a>
+
+        </div>
+
+    </main>
 
 </body>
-</html>
+
+                </html>

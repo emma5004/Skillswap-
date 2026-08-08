@@ -602,3 +602,58 @@ body {
     cursor: pointer;
     }
  
+/* =========================
+   PROFILE PICTURE
+========================= */
+
+.profile-card {
+    text-align: center;
+}
+
+.profile-picture-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #1746a2;
+}
+
+.profile-picture-placeholder {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: #eef3ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 55px;
+    border: 5px solid #1746a2;
+}
+
+.profile-upload-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.upload-button {
+    background: #eef3ff;
+    color: #1746a2;
+    padding: 11px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.upload-button:hover {
+    background: #dce7ff;
+    }

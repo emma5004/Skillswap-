@@ -31,9 +31,9 @@
     </nav>
 
 
-    <!-- PROFILE -->
     <main class="dashboard-container">
 
+        <!-- PROFILE HEADER -->
         <section class="welcome-section">
 
             <div>
@@ -54,16 +54,13 @@
             <div class="dashboard-card profile-card">
 
                 <!-- PROFILE PICTURE -->
-
                 <div class="profile-picture-container">
 
                     {% if session.get('profile_picture') %}
 
                         <img
-                            src="{{ url_for(
-                                'uploaded_file',
-                                filename=session.get('profile_picture')
-                            ) }}"
+                            src="{{ url_for('uploaded_file',
+                            filename=session.get('profile_picture')) }}"
                             class="profile-picture"
                             alt="Profile Picture"
                         >
@@ -79,8 +76,7 @@
                 </div>
 
 
-                <!-- UPLOAD FORM -->
-
+                <!-- UPLOAD PROFILE PICTURE -->
                 <form
                     action="/upload-profile-picture"
                     method="POST"
@@ -88,11 +84,11 @@
                     class="profile-upload-form"
                 >
 
-                    <label for="profile_picture"
-                           class="upload-button">
-
+                    <label
+                        for="profile_picture"
+                        class="upload-button"
+                    >
                         Choose Profile Picture
-
                     </label>
 
                     <input
@@ -121,11 +117,29 @@
                     {{ session.get('email', 'No email available') }}
                 </p>
 
+                {% if session.get('about') %}
+
                 <p>
-                    Welcome to Skill Swap! Complete your
-                    profile so other users can know more
-                    about you.
+                    {{ session.get('about') }}
                 </p>
+
+                {% else %}
+
+                <p>
+                    Tell other Skill Swap users a little
+                    about yourself.
+                </p>
+
+                {% endif %}
+
+
+                <!-- EDIT PROFILE BUTTON -->
+                <a
+                    href="/edit-profile"
+                    class="dashboard-card-button"
+                >
+                    Edit Profile
+                </a>
 
             </div>
 
@@ -133,7 +147,6 @@
 
 
         <!-- MY SKILL -->
-
         <section class="dashboard-section">
 
             <h2>What I Can Teach 🎓</h2>
@@ -145,13 +158,17 @@
                 <h3>{{ session.get('skill') }}</h3>
 
                 <p>
-                    Category:
+                    <strong>Category:</strong>
                     {{ session.get('category') }}
                 </p>
 
                 <p>
-                    Level:
+                    <strong>Level:</strong>
                     {{ session.get('level') }}
+                </p>
+
+                <p>
+                    {{ session.get('description') }}
                 </p>
 
             </div>
@@ -169,8 +186,10 @@
                     Skill Swap community.
                 </p>
 
-                <a href="/add-skill"
-                   class="primary-button">
+                <a
+                    href="/add-skill"
+                    class="primary-button"
+                >
                     Add My Skill
                 </a>
 
@@ -181,8 +200,7 @@
         </section>
 
 
-        <!-- LEARNING GOAL -->
-
+        <!-- SKILLS I WANT TO LEARN -->
         <section class="dashboard-section">
 
             <h2>What I Want to Learn 📚</h2>
@@ -196,13 +214,17 @@
                 </h3>
 
                 <p>
-                    Category:
+                    <strong>Category:</strong>
                     {{ session.get('learning_category') }}
                 </p>
 
                 <p>
-                    Level:
+                    <strong>Level:</strong>
                     {{ session.get('learning_level') }}
+                </p>
+
+                <p>
+                    {{ session.get('learning_description') }}
                 </p>
 
             </div>
@@ -219,8 +241,10 @@
                     Add a skill you want to learn.
                 </p>
 
-                <a href="/learn-skill"
-                   class="primary-button">
+                <a
+                    href="/learn-skill"
+                    class="primary-button"
+                >
                     Add Learning Goal
                 </a>
 
@@ -231,6 +255,7 @@
         </section>
 
 
+        <!-- BACK -->
         <a href="/dashboard" class="back-home">
             ← Back to Dashboard
         </a>
@@ -238,4 +263,4 @@
     </main>
 
 </body>
-                      </html>
+            </html>

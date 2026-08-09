@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Learn a Skill | Skill Swap</title>
+    <title>Learn Skill | Skill Swap</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
@@ -40,51 +40,37 @@
                     📚
                 </div>
 
-                <h1>What Do You Want to Learn?</h1>
+                <h1>Learn a Skill</h1>
 
                 <p>
-                    Tell the Skill Swap community about
-                    the skill you want to learn.
+                    Tell us what skill you want to learn.
                 </p>
 
+                <form method="POST">
 
-                <form method="POST" action="/learn-skill">
-
-                    <label for="skill">
-                        Skill
-                    </label>
+                    <label>Skill</label>
 
                     <input
                         type="text"
-                        id="skill"
                         name="skill"
-                        placeholder="e.g. Video Editing"
+                        placeholder="Example: Video Editing"
                         required
                     >
 
 
-                    <label for="category">
-                        Category
-                    </label>
+                    <label>Category</label>
 
                     <input
                         type="text"
-                        id="category"
                         name="category"
-                        placeholder="e.g. Technology"
+                        placeholder="Example: Technology"
                         required
                     >
 
 
-                    <label for="level">
-                        Current Level
-                    </label>
+                    <label>Level</label>
 
-                    <select
-                        id="level"
-                        name="level"
-                        required
-                    >
+                    <select name="level" required>
 
                         <option value="">
                             Select your level
@@ -105,15 +91,12 @@
                     </select>
 
 
-                    <label for="description">
-                        Description
-                    </label>
+                    <label>Description</label>
 
                     <textarea
-                        id="description"
                         name="description"
                         rows="5"
-                        placeholder="Tell us what you want to learn..."
+                        placeholder="What would you like to learn?"
                         required
                     ></textarea>
 
@@ -126,7 +109,6 @@
                     </button>
 
                 </form>
-
 
                 <br>
 
@@ -145,4 +127,4 @@
 
 </body>
 
-                        </html>
+</html>

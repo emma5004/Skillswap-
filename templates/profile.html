@@ -9,191 +9,374 @@
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .profile-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .profile-header p {
+            color: #64748b;
+        }
+
+        .profile-main-card {
+            background: white;
+            border-radius: 22px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .profile-picture-container {
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .profile-picture-placeholder {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 50px;
+        }
+
+        .profile-main-card h2 {
+            margin: 15px 0 8px;
+        }
+
+        .profile-email {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .profile-about {
+            max-width: 600px;
+            margin: 15px auto 25px;
+            line-height: 1.6;
+            color: #475569;
+        }
+
+        .profile-upload-form {
+            margin: 20px auto;
+            max-width: 400px;
+        }
+
+        .upload-button {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 9px;
+            background: #f1f5f9;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .upload-button:hover {
+            background: #e2e8f0;
+        }
+
+        .profile-upload-form input[type="file"] {
+            display: none;
+        }
+
+        .upload-submit {
+            width: 100%;
+            border: none;
+            padding: 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .edit-profile-button {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .profile-section {
+            margin-bottom: 30px;
+        }
+
+        .profile-section h2 {
+            margin-bottom: 15px;
+        }
+
+        .profile-info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .profile-info-card h3 {
+            margin-top: 0;
+        }
+
+        .empty-profile-card {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .back-dashboard {
+            display: block;
+            text-align: center;
+            margin: 30px 0;
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 
 <body class="dashboard-page">
 
     <!-- NAVIGATION -->
+
     <nav class="dashboard-nav">
 
         <div class="dashboard-logo">
-            <div class="small-logo">SS</div>
-            <span>Skill Swap</span>
+
+            <div class="small-logo">
+                SS
+            </div>
+
+            <span>
+                Skill Swap
+            </span>
+
         </div>
 
+
         <div class="dashboard-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/browse">Find Skills</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/browse">
+                Find Skills
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/logout"
+               class="logout-btn">
+                Logout
+            </a>
+
         </div>
 
     </nav>
 
 
-    <main class="dashboard-container">
+    <main class="profile-page">
+
 
         <!-- PROFILE HEADER -->
-        <section class="welcome-section">
 
-            <div>
-                <h1>My Profile 👤</h1>
+        <section class="profile-header">
 
-                <p>
-                    Manage your Skill Swap profile and
-                    tell people more about yourself.
-                </p>
-            </div>
+            <h1>
+                My Profile 👤
+            </h1>
+
+            <p>
+                Manage your Skill Swap profile and
+                connect with other learners.
+            </p>
 
         </section>
 
 
-        <!-- PROFILE INFORMATION -->
-        <section class="dashboard-section">
+        <!-- MAIN PROFILE -->
 
-            <div class="dashboard-card profile-card">
-
-                <!-- PROFILE PICTURE -->
-                <div class="profile-picture-container">
-
-                    {% if session.get('profile_picture') %}
-
-                        <img
-                            src="{{ url_for('uploaded_file',
-                            filename=session.get('profile_picture')) }}"
-                            class="profile-picture"
-                            alt="Profile Picture"
-                        >
-
-                    {% else %}
-
-                        <div class="profile-picture-placeholder">
-                            👤
-                        </div>
-
-                    {% endif %}
-
-                </div>
+        <section class="profile-main-card">
 
 
-                <!-- UPLOAD PROFILE PICTURE -->
-                <form
-                    action="/upload-profile-picture"
-                    method="POST"
-                    enctype="multipart/form-data"
-                    class="profile-upload-form"
-                >
+            <!-- PROFILE PICTURE -->
 
-                    <label
-                        for="profile_picture"
-                        class="upload-button"
+            <div class="profile-picture-container">
+
+                {% if profile_picture %}
+
+                    <img
+                        src="{{ url_for(
+                            'uploaded_file',
+                            filename=profile_picture
+                        ) }}"
+                        class="profile-picture"
+                        alt="Profile Picture"
                     >
-                        Choose Profile Picture
-                    </label>
-
-                    <input
-                        type="file"
-                        id="profile_picture"
-                        name="profile_picture"
-                        accept="image/png, image/jpeg, image/jpg, image/gif"
-                        required
-                        hidden
-                    >
-
-                    <button
-                        type="submit"
-                        class="dashboard-card-button"
-                    >
-                        Upload Picture
-                    </button>
-
-                </form>
-
-
-                <h2>{{ name }}</h2>
-
-                <p>
-                    <strong>Email:</strong>
-                    {{ session.get('email', 'No email available') }}
-                </p>
-
-                {% if session.get('about') %}
-
-                <p>
-                    {{ session.get('about') }}
-                </p>
 
                 {% else %}
 
-                <p>
-                    Tell other Skill Swap users a little
-                    about yourself.
-                </p>
+                    <div class="profile-picture-placeholder">
+                        👤
+                    </div>
 
                 {% endif %}
 
-
-                <!-- EDIT PROFILE BUTTON -->
-                <a
-                    href="/edit-profile"
-                    class="dashboard-card-button"
-                >
-                    Edit Profile
-                </a>
-
             </div>
+
+
+            <!-- UPLOAD PICTURE -->
+
+            <form
+                action="/upload-profile-picture"
+                method="POST"
+                enctype="multipart/form-data"
+                class="profile-upload-form"
+            >
+
+                <label
+                    for="profile_picture"
+                    class="upload-button"
+                >
+                    Choose Profile Picture
+                </label>
+
+                <input
+                    type="file"
+                    id="profile_picture"
+                    name="profile_picture"
+                    accept="image/png, image/jpeg, image/jpg, image/gif"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    class="upload-submit dashboard-card-button"
+                >
+                    Upload Picture
+                </button>
+
+            </form>
+
+
+            <!-- USER INFORMATION -->
+
+            <h2>
+                {{ name }}
+            </h2>
+
+
+            <p class="profile-email">
+                <strong>Email:</strong>
+                {{ email }}
+            </p>
+
+
+            {% if about %}
+
+                <p class="profile-about">
+                    {{ about }}
+                </p>
+
+            {% else %}
+
+                <p class="profile-about">
+                    You haven't added anything about yourself yet.
+                </p>
+
+            {% endif %}
+
+
+            <!-- EDIT PROFILE -->
+
+            <a
+                href="/edit-profile"
+                class="edit-profile-button dashboard-card-button"
+            >
+                ✏️ Edit Profile
+            </a>
 
         </section>
 
 
-        <!-- MY SKILL -->
-        <section class="dashboard-section">
+        <!-- SKILLS I CAN TEACH -->
 
-            <h2>What I Can Teach 🎓</h2>
+        <section class="profile-section">
+
+            <h2>
+                What I Can Teach 🎓
+            </h2>
+
 
             {% if session.get('skill') %}
 
-            <div class="dashboard-card">
+                <div class="profile-info-card">
 
-                <h3>{{ session.get('skill') }}</h3>
+                    <h3>
+                        {{ session.get('skill') }}
+                    </h3>
 
-                <p>
-                    <strong>Category:</strong>
-                    {{ session.get('category') }}
-                </p>
+                    <p>
+                        <strong>Category:</strong>
+                        {{ session.get('category') }}
+                    </p>
 
-                <p>
-                    <strong>Level:</strong>
-                    {{ session.get('level') }}
-                </p>
+                    <p>
+                        <strong>Level:</strong>
+                        {{ session.get('level') }}
+                    </p>
 
-                <p>
-                    {{ session.get('description') }}
-                </p>
+                    <p>
+                        {{ session.get('description') }}
+                    </p>
 
-            </div>
+                </div>
 
             {% else %}
 
-            <div class="empty-card">
+                <div class="empty-profile-card">
 
-                <div class="empty-icon">🎓</div>
+                    <h3>
+                        No skill added yet 🎓
+                    </h3>
 
-                <h3>No skill added yet</h3>
+                    <p>
+                        Add a skill you can teach to
+                        the Skill Swap community.
+                    </p>
 
-                <p>
-                    Add a skill you can teach to the
-                    Skill Swap community.
-                </p>
+                    <a
+                        href="/add-skill"
+                        class="primary-button"
+                    >
+                        Add My Skill
+                    </a>
 
-                <a
-                    href="/add-skill"
-                    class="primary-button"
-                >
-                    Add My Skill
-                </a>
-
-            </div>
+                </div>
 
             {% endif %}
 
@@ -201,66 +384,76 @@
 
 
         <!-- SKILLS I WANT TO LEARN -->
-        <section class="dashboard-section">
 
-            <h2>What I Want to Learn 📚</h2>
+        <section class="profile-section">
+
+            <h2>
+                What I Want to Learn 📚
+            </h2>
+
 
             {% if session.get('learning_skill') %}
 
-            <div class="dashboard-card">
+                <div class="profile-info-card">
 
-                <h3>
-                    {{ session.get('learning_skill') }}
-                </h3>
+                    <h3>
+                        {{ session.get('learning_skill') }}
+                    </h3>
 
-                <p>
-                    <strong>Category:</strong>
-                    {{ session.get('learning_category') }}
-                </p>
+                    <p>
+                        <strong>Category:</strong>
+                        {{ session.get('learning_category') }}
+                    </p>
 
-                <p>
-                    <strong>Level:</strong>
-                    {{ session.get('learning_level') }}
-                </p>
+                    <p>
+                        <strong>Level:</strong>
+                        {{ session.get('learning_level') }}
+                    </p>
 
-                <p>
-                    {{ session.get('learning_description') }}
-                </p>
+                    <p>
+                        {{ session.get('learning_description') }}
+                    </p>
 
-            </div>
+                </div>
 
             {% else %}
 
-            <div class="empty-card">
+                <div class="empty-profile-card">
 
-                <div class="empty-icon">📚</div>
+                    <h3>
+                        No learning goal added yet 📚
+                    </h3>
 
-                <h3>No learning goal added yet</h3>
+                    <p>
+                        Add a skill you want to learn.
+                    </p>
 
-                <p>
-                    Add a skill you want to learn.
-                </p>
+                    <a
+                        href="/learn-skill"
+                        class="primary-button"
+                    >
+                        Add Learning Goal
+                    </a>
 
-                <a
-                    href="/learn-skill"
-                    class="primary-button"
-                >
-                    Add Learning Goal
-                </a>
-
-            </div>
+                </div>
 
             {% endif %}
 
         </section>
 
 
-        <!-- BACK -->
-        <a href="/dashboard" class="back-home">
+        <!-- BACK TO DASHBOARD -->
+
+        <a
+            href="/dashboard"
+            class="back-dashboard"
+        >
             ← Back to Dashboard
         </a>
+
 
     </main>
 
 </body>
-            </html>
+
+    </html>

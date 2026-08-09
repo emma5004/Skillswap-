@@ -1,165 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Add Your Skill | Skill Swap</title>
+    <title>Add Skill | Skill Swap</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .skill-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .skill-box {
+            width: 100%;
+            max-width: 550px;
+            margin: 30px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+
+        .skill-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .skill-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .skill-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .skill-header p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 15px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #4f46e5;
+        }
+
+        .save-skill-button {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .save-skill-button:hover {
+            opacity: 0.9;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            text-decoration: none;
+            color: #64748b;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .skill-page {
+                padding: 20px 15px;
+            }
+
+            .skill-box {
+                padding: 25px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body class="dashboard-page">
 
     <!-- NAVIGATION -->
+
     <nav class="dashboard-nav">
 
         <div class="dashboard-logo">
-            <div class="small-logo">SS</div>
-            <span>Skill Swap</span>
+
+            <div class="small-logo">
+                SS
+            </div>
+
+            <span>
+                Skill Swap
+            </span>
+
         </div>
 
         <div class="dashboard-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/browse">Find Skills</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/browse">
+                Find Skills
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+
         </div>
 
     </nav>
 
 
-    <!-- MAIN CONTENT -->
-    <main class="skill-form-container">
+    <!-- ADD SKILL -->
 
-        <div class="skill-form-box">
+    <main class="skill-page">
 
-            <div class="skill-form-icon">
-                🎓
+        <div class="skill-box">
+
+            <div class="skill-header">
+
+                <div class="skill-icon">
+                    🎓
+                </div>
+
+                <h1>
+                    Add a Skill
+                </h1>
+
+                <p>
+                    Tell the Skill Swap community what
+                    you can teach.
+                </p>
+
             </div>
 
-            <h1>What Can You Teach?</h1>
 
-            <p class="skill-form-subtitle">
-                Tell the Skill Swap community about a skill
-                you can teach to others.
-            </p>
+            {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
 
 
-            <form method="POST" action="/add-skill">
+            <form
+                method="POST"
+                action="/add-skill"
+            >
 
-                <label for="skill">
-                    Skill Name
-                </label>
+                <!-- SKILL -->
 
-                <input
-                    type="text"
-                    id="skill"
-                    name="skill"
-                    placeholder="e.g. Graphic Design"
-                    required
+                <div class="form-group">
+
+                    <label for="skill">
+                        Skill Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="skill"
+                        name="skill"
+                        placeholder="Example: Graphic Design"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Category
+                    </label>
+
+                    <select
+                        id="category"
+                        name="category"
+                        required
+                    >
+
+                        <option value="">
+                            Select a category
+                        </option>
+
+                        <option value="Technology">
+                            Technology
+                        </option>
+
+                        <option value="Design">
+                            Design
+                        </option>
+
+                        <option value="Business">
+                            Business
+                        </option>
+
+                        <option value="Marketing">
+                            Marketing
+                        </option>
+
+                        <option value="Music">
+                            Music
+                        </option>
+
+                        <option value="Photography">
+                            Photography
+                        </option>
+
+                        <option value="Video Editing">
+                            Video Editing
+                        </option>
+
+                        <option value="Writing">
+                            Writing
+                        </option>
+
+                        <option value="Education">
+                            Education
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- LEVEL -->
+
+                <div class="form-group">
+
+                    <label for="level">
+                        Skill Level
+                    </label>
+
+                    <select
+                        id="level"
+                        name="level"
+                        required
+                    >
+
+                        <option value="">
+                            Select your level
+                        </option>
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+                        <option value="Expert">
+                            Expert
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Tell people what you can teach..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="save-skill-button"
                 >
-
-
-                <label for="category">
-                    Category
-                </label>
-
-                <select id="category" name="category" required>
-
-                    <option value="">
-                        Select a category
-                    </option>
-
-                    <option value="Technology">
-                        Technology
-                    </option>
-
-                    <option value="Business">
-                        Business
-                    </option>
-
-                    <option value="Design">
-                        Design
-                    </option>
-
-                    <option value="Music">
-                        Music
-                    </option>
-
-                    <option value="Photography">
-                        Photography
-                    </option>
-
-                    <option value="Writing">
-                        Writing
-                    </option>
-
-                    <option value="Cooking">
-                        Cooking
-                    </option>
-
-                    <option value="Fashion">
-                        Fashion
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-
-                <label for="level">
-                    Your Skill Level
-                </label>
-
-                <select id="level" name="level" required>
-
-                    <option value="">
-                        Select your level
-                    </option>
-
-                    <option value="Beginner">
-                        Beginner
-                    </option>
-
-                    <option value="Intermediate">
-                        Intermediate
-                    </option>
-
-                    <option value="Advanced">
-                        Advanced
-                    </option>
-
-                    <option value="Expert">
-                        Expert
-                    </option>
-
-                </select>
-
-
-                <label for="description">
-                    Tell Us About Your Skill
-                </label>
-
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="5"
-                    placeholder="Explain what you can teach..."
-                    required
-                ></textarea>
-
-
-                <button type="submit" class="auth-button">
-                    Add My Skill
+                    Save My Skill
                 </button>
 
             </form>
 
 
-            <a href="/dashboard" class="back-home">
+            <a
+                href="/dashboard"
+                class="back-link"
+            >
                 ← Back to Dashboard
             </a>
 
@@ -168,4 +373,5 @@
     </main>
 
 </body>
-                    </html>
+
+    </html>

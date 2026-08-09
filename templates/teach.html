@@ -1,30 +1,187 @@
-@app.route('/teach', methods=['GET', 'POST'])
-def teach():
-    if 'user' not in session:
-        return redirect(url_for('login'))
+<!DOCTYPE html>
+<html lang="en">
 
-    if request.method == 'POST':
-        skill_name = request.form['skill_name']
-        category = request.form['category']
-        price = int(request.form['price'])
-        description = request.form['description']
-        teacher = session['user']
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        # Block prices below minimum
-        mins = {'high': 5000, 'medium': 3000, 'low': 1500}
-        if price < mins[category]:
-            return f"Error: Minimum price for this category is ₦{mins[category]}"
+    <title>Add Skill | Skill Swap</title>
 
-        # Save to database - temporary list for now
-        # Later we will use SQLite
-        skills.append({
-            'skill_name': skill_name,
-            'category': category,
-            'price': price,
-            'description': description,
-            'teacher': teacher
-        })
-        
-        return redirect(url_for('browse'))
-    
-    return render_template('teach.html')
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="dashboard-nav">
+
+        <div class="dashboard-logo">
+            <div class="small-logo">SS</div>
+            <span>Skill Swap</span>
+        </div>
+
+        <div class="dashboard-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/browse">Find Skills</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <main class="skill-form-container">
+
+        <div class="skill-form-box">
+
+            <h1>Add a Skill 🎓</h1>
+
+            <p>
+                Tell people in the Skill Swap community
+                what you can teach.
+            </p>
+
+            {% if error %}
+                <p style="color:red;">
+                    {{ error }}
+                </p>
+            {% endif %}
+
+
+            <form method="POST" action="/add-skill">
+
+                <label for="skill">
+                    Skill Name
+                </label>
+
+                <input
+                    type="text"
+                    id="skill"
+                    name="skill"
+                    placeholder="Example: Graphic Design"
+                    required
+                >
+
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required
+                >
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Technology">
+                        Technology
+                    </option>
+
+                    <option value="Design">
+                        Design
+                    </option>
+
+                    <option value="Business">
+                        Business
+                    </option>
+
+                    <option value="Marketing">
+                        Marketing
+                    </option>
+
+                    <option value="Music">
+                        Music
+                    </option>
+
+                    <option value="Photography">
+                        Photography
+                    </option>
+
+                    <option value="Video Editing">
+                        Video Editing
+                    </option>
+
+                    <option value="Writing">
+                        Writing
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+
+                <label for="level">
+                    Skill Level
+                </label>
+
+                <select
+                    id="level"
+                    name="level"
+                    required
+                >
+
+                    <option value="">
+                        Select Level
+                    </option>
+
+                    <option value="Beginner">
+                        Beginner
+                    </option>
+
+                    <option value="Intermediate">
+                        Intermediate
+                    </option>
+
+                    <option value="Advanced">
+                        Advanced
+                    </option>
+
+                    <option value="Expert">
+                        Expert
+                    </option>
+
+                </select>
+
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    placeholder="Describe what you can teach..."
+                    required
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    class="dashboard-card-button"
+                >
+                    Save My Skill
+                </button>
+
+            </form>
+
+
+            <br>
+
+            <a href="/dashboard" class="back-home">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+
+            </html>

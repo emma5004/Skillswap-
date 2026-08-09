@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Learn a Skill | Skill Swap</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="dashboard-page">
+
+    <nav class="dashboard-nav">
+
+        <div class="dashboard-logo">
+            <div class="small-logo">SS</div>
+            <span>Skill Swap</span>
+        </div>
+
+        <div class="dashboard-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/browse">Find Skills</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <main class="dashboard-container">
+
+        <section class="dashboard-section">
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    📚
+                </div>
+
+                <h1>What Do You Want to Learn?</h1>
+
+                <p>
+                    Tell the Skill Swap community about
+                    the skill you want to learn.
+                </p>
+
+
+                <form method="POST" action="/learn-skill">
+
+                    <label for="skill">
+                        Skill
+                    </label>
+
+                    <input
+                        type="text"
+                        id="skill"
+                        name="skill"
+                        placeholder="e.g. Video Editing"
+                        required
+                    >
+
+
+                    <label for="category">
+                        Category
+                    </label>
+
+                    <input
+                        type="text"
+                        id="category"
+                        name="category"
+                        placeholder="e.g. Technology"
+                        required
+                    >
+
+
+                    <label for="level">
+                        Current Level
+                    </label>
+
+                    <select
+                        id="level"
+                        name="level"
+                        required
+                    >
+
+                        <option value="">
+                            Select your level
+                        </option>
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+                    </select>
+
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="5"
+                        placeholder="Tell us what you want to learn..."
+                        required
+                    ></textarea>
+
+
+                    <button
+                        type="submit"
+                        class="dashboard-card-button"
+                    >
+                        Save Learning Goal
+                    </button>
+
+                </form>
+
+
+                <br>
+
+                <a
+                    href="/dashboard"
+                    class="back-home"
+                >
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+                        </html>

@@ -5,126 +5,262 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Learn Skill | Skill Swap</title>
+    <title>Learn a Skill | Skill Swap</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .learn-page {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .learn-box {
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .learn-icon {
+            font-size: 45px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .learn-box h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .learn-subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .learn-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .learn-form label {
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .learn-form input,
+        .learn-form select,
+        .learn-form textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .learn-form textarea {
+            resize: vertical;
+        }
+
+        .learn-submit {
+            margin-top: 15px;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .learn-back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+
+            .learn-page {
+                margin: 20px auto;
+                padding: 15px;
+            }
+
+            .learn-box {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+
 </head>
 
+
 <body class="dashboard-page">
+
+
+    <!-- NAVIGATION -->
 
     <nav class="dashboard-nav">
 
         <div class="dashboard-logo">
-            <div class="small-logo">SS</div>
-            <span>Skill Swap</span>
+
+            <div class="small-logo">
+                SS
+            </div>
+
+            <span>
+                Skill Swap
+            </span>
+
         </div>
 
+
         <div class="dashboard-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/browse">Find Skills</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/browse">
+                Find Skills
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/logout" class="logout-btn">
+                Logout
+            </a>
+
         </div>
 
     </nav>
 
 
-    <main class="dashboard-container">
 
-        <section class="dashboard-section">
+    <!-- LEARN FORM -->
 
-            <div class="dashboard-card">
+    <main class="learn-page">
 
-                <div class="card-icon">
-                    📚
-                </div>
+        <div class="learn-box">
 
-                <h1>Learn a Skill</h1>
-
-                <p>
-                    Tell us what skill you want to learn.
-                </p>
-
-                <form method="POST">
-
-                    <label>Skill</label>
-
-                    <input
-                        type="text"
-                        name="skill"
-                        placeholder="Example: Video Editing"
-                        required
-                    >
-
-
-                    <label>Category</label>
-
-                    <input
-                        type="text"
-                        name="category"
-                        placeholder="Example: Technology"
-                        required
-                    >
-
-
-                    <label>Level</label>
-
-                    <select name="level" required>
-
-                        <option value="">
-                            Select your level
-                        </option>
-
-                        <option value="Beginner">
-                            Beginner
-                        </option>
-
-                        <option value="Intermediate">
-                            Intermediate
-                        </option>
-
-                        <option value="Advanced">
-                            Advanced
-                        </option>
-
-                    </select>
-
-
-                    <label>Description</label>
-
-                    <textarea
-                        name="description"
-                        rows="5"
-                        placeholder="What would you like to learn?"
-                        required
-                    ></textarea>
-
-
-                    <button
-                        type="submit"
-                        class="dashboard-card-button"
-                    >
-                        Save Learning Goal
-                    </button>
-
-                </form>
-
-                <br>
-
-                <a
-                    href="/dashboard"
-                    class="back-home"
-                >
-                    ← Back to Dashboard
-                </a>
-
+            <div class="learn-icon">
+                📚
             </div>
 
-        </section>
+
+            <h1>
+                Learn a Skill
+            </h1>
+
+
+            <p class="learn-subtitle">
+                Tell the Skill Swap community what
+                you would like to learn.
+            </p>
+
+
+            <form
+                method="POST"
+                class="learn-form"
+            >
+
+
+                <label for="skill">
+                    Skill
+                </label>
+
+                <input
+                    type="text"
+                    id="skill"
+                    name="skill"
+                    placeholder="Example: Video Editing"
+                    required
+                >
+
+
+                <label for="category">
+                    Category
+                </label>
+
+                <input
+                    type="text"
+                    id="category"
+                    name="category"
+                    placeholder="Example: Technology"
+                    required
+                >
+
+
+                <label for="level">
+                    Your Level
+                </label>
+
+                <select
+                    id="level"
+                    name="level"
+                    required
+                >
+
+                    <option value="">
+                        Select your level
+                    </option>
+
+                    <option value="Beginner">
+                        Beginner
+                    </option>
+
+                    <option value="Intermediate">
+                        Intermediate
+                    </option>
+
+                    <option value="Advanced">
+                        Advanced
+                    </option>
+
+                </select>
+
+
+                <label for="description">
+                    What do you want to learn?
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    placeholder="Describe what you would like to learn..."
+                    required
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    class="learn-submit dashboard-card-button"
+                >
+                    Save Learning Goal
+                </button>
+
+            </form>
+
+
+            <a
+                href="/dashboard"
+                class="learn-back back-home"
+            >
+                ← Back to Dashboard
+            </a>
+
+        </div>
 
     </main>
 
 </body>
 
-</html>
+                    </html>

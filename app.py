@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, send_from_directory
 import os
+import sqlite3
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -7,7 +8,40 @@ app = Flask(__name__)
 app.secret_key = "skill_swap_secret_key"
 
 # =========================
-# UPLOAD SETTINGS
+# DATABASE
+# =========================
+
+DATABASE = "skill_swap_users.db"
+
+def get_db():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def init_database():
+
+    conn = get_db()
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            about TEXT DEFAULT '',
+            profile_picture TEXT DEFAULT ''
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+init_database()
+
+
+# =========================
+# PROFILE PICTURE SETTINGS
 # =========================
 
 UPLOAD_FOLDER = "uploads"
@@ -16,7 +50,12 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+ALLOWED_EXTENSIONS = {
+    "png",
+    "jpg",
+    "jpeg",
+    "gif"
+}
 
 
 def allowed_file(filename):
@@ -39,24 +78,6 @@ def home():
 
 
 # =========================
-# LOGIN
-# =========================
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-
-    if request.method == "POST":
-
-        email = request.form.get("email", "").strip()
-
-        session["email"] = email
-
-        return redirect("/dashboard")
-
-    return render_template("login.html")
-
-
-# =========================
 # SIGN UP
 # =========================
 
@@ -66,14 +87,89 @@ def signup():
     if request.method == "POST":
 
         name = request.form.get("name", "").strip()
-        email = request.form.get("email", "").strip()
+        email = request.form.get("email", "").strip().lower()
 
-        session["name"] = name
+        if not name or not email:
+            return render_template(
+                "signup.html",
+                error="Please enter your name and email."
+            )
+
+        conn = get_db()
+
+        existing_user = conn.execute(
+            "SELECT * FROM users WHERE email = ?",
+            (email,)
+        ).fetchone()
+
+        if existing_user:
+
+            conn.close()
+
+            session["email"] = email
+
+            return redirect("/dashboard")
+
+        conn.execute(
+            """
+            INSERT INTO users
+            (name, email, about, profile_picture)
+            VALUES (?, ?, ?, ?)
+            """,
+            (name, email, "", "")
+        )
+
+        conn.commit()
+        conn.close()
+
         session["email"] = email
 
         return redirect("/dashboard")
 
     return render_template("signup.html")
+
+
+# =========================
+# LOGIN
+# =========================
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+
+        email = request.form.get("email", "").strip().lower()
+
+        conn = get_db()
+
+        user = conn.execute(
+            "SELECT * FROM users WHERE email = ?",
+            (email,)
+        ).fetchone()
+
+        # If the email isn't in the database yet,
+        # create a basic account so existing users
+        # can continue using the website.
+        if user is None:
+
+            conn.execute(
+                """
+                INSERT INTO users
+                (name, email, about, profile_picture)
+                VALUES (?, ?, ?, ?)
+                """,
+                ("Skill Swapper", email, "", "")
+            )
+
+            conn.commit()
+
+        conn.close()
+
+        session["email"] = email
+
+        return redirect("/dashboard")
+
+    return render_template("login.html")
 
 
 # =========================
@@ -83,11 +179,26 @@ def signup():
 @app.route("/dashboard")
 def dashboard():
 
-    name = session.get("name", "Skill Swapper")
+    email = session.get("email")
+
+    if not email:
+        return redirect("/login")
+
+    conn = get_db()
+
+    user = conn.execute(
+        "SELECT * FROM users WHERE email = ?",
+        (email,)
+    ).fetchone()
+
+    conn.close()
+
+    if user is None:
+        return redirect("/login")
 
     return render_template(
         "dashboard.html",
-        name=name
+        name=user["name"]
     )
 
 
@@ -102,7 +213,7 @@ def browse():
 
 
 # =========================
-# ADD SKILL I CAN TEACH
+# ADD SKILL
 # =========================
 
 @app.route("/add-skill", methods=["GET", "POST"])
@@ -121,7 +232,7 @@ def add_skill():
 
 
 # =========================
-# ADD SKILL I WANT TO LEARN
+# LEARN SKILL
 # =========================
 
 @app.route("/learn-skill", methods=["GET", "POST"])
@@ -132,7 +243,10 @@ def learn_skill():
         session["learning_skill"] = request.form.get("skill", "")
         session["learning_category"] = request.form.get("category", "")
         session["learning_level"] = request.form.get("level", "")
-        session["learning_description"] = request.form.get("description", "")
+        session["learning_description"] = request.form.get(
+            "description",
+            ""
+        )
 
         return redirect("/dashboard")
 
@@ -146,34 +260,120 @@ def learn_skill():
 @app.route("/profile")
 def profile():
 
-    name = session.get("name", "Skill Swapper")
+    email = session.get("email")
+
+    if not email:
+        return redirect("/login")
+
+    conn = get_db()
+
+    user = conn.execute(
+        "SELECT * FROM users WHERE email = ?",
+        (email,)
+    ).fetchone()
+
+    conn.close()
+
+    if user is None:
+        return redirect("/login")
 
     return render_template(
         "profile.html",
-        name=name
+        name=user["name"],
+        email=user["email"],
+        about=user["about"],
+        profile_picture=user["profile_picture"]
     )
 
+
+# =========================
+# EDIT PROFILE
+# =========================
 
 @app.route("/edit-profile", methods=["GET", "POST"])
 def edit_profile():
 
+    email = session.get("email")
+
+    if not email:
+        return redirect("/login")
+
+    conn = get_db()
+
+    user = conn.execute(
+        "SELECT * FROM users WHERE email = ?",
+        (email,)
+    ).fetchone()
+
+    if user is None:
+
+        conn.close()
+
+        return redirect("/login")
+
     if request.method == "POST":
 
-        session["name"] = request.form.get("name", "")
-        session["email"] = request.form.get("email", "")
-        session["about"] = request.form.get("about", "")
+        name = request.form.get("name", "").strip()
+        new_email = request.form.get("email", "").strip().lower()
+        about = request.form.get("about", "").strip()
+
+        if not name or not new_email:
+
+            conn.close()
+
+            return render_template(
+                "edit_profile.html",
+                name=name,
+                email=new_email,
+                about=about
+            )
+
+        # If the user changed their email,
+        # make sure another account isn't already using it.
+        other_user = conn.execute(
+            """
+            SELECT id FROM users
+            WHERE email = ? AND id != ?
+            """,
+            (new_email, user["id"])
+        ).fetchone()
+
+        if other_user:
+
+            conn.close()
+
+            return render_template(
+                "edit_profile.html",
+                name=name,
+                email=new_email,
+                about=about,
+                error="That email is already being used."
+            )
+
+        conn.execute(
+            """
+            UPDATE users
+            SET name = ?, email = ?, about = ?
+            WHERE id = ?
+            """,
+            (name, new_email, about, user["id"])
+        )
+
+        conn.commit()
+        conn.close()
+
+        # Update the logged-in email
+        session["email"] = new_email
 
         return redirect("/profile")
 
-    name = session.get("name", "")
-    email = session.get("email", "")
-    about = session.get("about", "")
+    conn.close()
 
     return render_template(
         "edit_profile.html",
-        name=name,
-        email=email,
-        about=about
+        name=user["name"],
+        email=user["email"],
+        about=user["about"]
     )
 
 
@@ -184,36 +384,49 @@ def edit_profile():
 @app.route("/upload-profile-picture", methods=["POST"])
 def upload_profile_picture():
 
-    if "profile_picture" not in request.files:
+    email = session.get("email")
 
+    if not email:
+        return redirect("/login")
+
+    if "profile_picture" not in request.files:
         return redirect("/profile")
 
     file = request.files["profile_picture"]
 
     if file.filename == "":
-
         return redirect("/profile")
 
     if not allowed_file(file.filename):
-
         return redirect("/profile")
 
     filename = secure_filename(file.filename)
 
-    email = session.get("email", "user")
+    # Give every user's picture a unique filename.
+    extension = filename.rsplit(".", 1)[1].lower()
 
-    safe_email = secure_filename(email)
+    filename = "profile_" + secure_filename(email) + "." + extension
 
-    filename = "profile_" + safe_email + "_" + filename
-
-    file.save(
-        os.path.join(
-            app.config["UPLOAD_FOLDER"],
-            filename
-        )
+    filepath = os.path.join(
+        app.config["UPLOAD_FOLDER"],
+        filename
     )
 
-    session["profile_picture"] = filename
+    file.save(filepath)
+
+    conn = get_db()
+
+    conn.execute(
+        """
+        UPDATE users
+        SET profile_picture = ?
+        WHERE email = ?
+        """,
+        (filename, email)
+    )
+
+    conn.commit()
+    conn.close()
 
     return redirect("/profile")
 
@@ -238,10 +451,7 @@ def uploaded_file(filename):
 @app.route("/logout")
 def logout():
 
-    # Keep the uploaded picture and profile information
-    # for this temporary version.
-    session.pop("email", None)
-    session.pop("name", None)
+    session.clear()
 
     return redirect("/")
 

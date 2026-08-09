@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Learn a Skill | Skill Swap</title>
 
@@ -11,28 +12,29 @@
           href="{{ url_for('static', filename='style.css') }}">
 
     <style>
+
         .learn-page {
-            max-width: 700px;
-            margin: 50px auto;
+            max-width: 720px;
+            margin: 40px auto;
             padding: 20px;
         }
 
         .learn-box {
             background: white;
-            padding: 40px;
+            padding: 35px;
             border-radius: 18px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
 
         .learn-icon {
-            font-size: 45px;
             text-align: center;
-            margin-bottom: 15px;
+            font-size: 45px;
+            margin-bottom: 10px;
         }
 
         .learn-box h1 {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .learn-subtitle {
@@ -44,7 +46,7 @@
         .learn-form {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .learn-form label {
@@ -56,11 +58,11 @@
         .learn-form select,
         .learn-form textarea {
             width: 100%;
-            padding: 13px 14px;
+            box-sizing: border-box;
+            padding: 13px;
             border: 1px solid #ddd;
             border-radius: 10px;
             font-size: 16px;
-            box-sizing: border-box;
         }
 
         .learn-form textarea {
@@ -68,6 +70,7 @@
         }
 
         .learn-submit {
+            width: 100%;
             margin-top: 15px;
             padding: 14px;
             border: none;
@@ -77,24 +80,33 @@
             cursor: pointer;
         }
 
+        .error-message {
+            background: #ffe8e8;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
         .learn-back {
             display: block;
             text-align: center;
             margin-top: 25px;
-            text-decoration: none;
         }
 
         @media (max-width: 600px) {
 
             .learn-page {
                 margin: 20px auto;
-                padding: 15px;
+                padding: 12px;
             }
 
             .learn-box {
-                padding: 25px 20px;
+                padding: 25px 18px;
             }
+
         }
+
     </style>
 
 </head>
@@ -134,7 +146,8 @@
                 Profile
             </a>
 
-            <a href="/logout" class="logout-btn">
+            <a href="/logout"
+               class="logout-btn">
                 Logout
             </a>
 
@@ -144,11 +157,12 @@
 
 
 
-    <!-- LEARN FORM -->
+    <!-- LEARN SKILL FORM -->
 
     <main class="learn-page">
 
         <div class="learn-box">
+
 
             <div class="learn-icon">
                 📚
@@ -166,14 +180,24 @@
             </p>
 
 
+            {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
             <form
                 method="POST"
+                action="/learn-skill"
                 class="learn-form"
             >
 
 
                 <label for="skill">
-                    Skill
+                    Skill You Want to Learn
                 </label>
 
                 <input
@@ -183,6 +207,7 @@
                     placeholder="Example: Video Editing"
                     required
                 >
+
 
 
                 <label for="category">
@@ -198,8 +223,9 @@
                 >
 
 
+
                 <label for="level">
-                    Your Level
+                    Your Current Level
                 </label>
 
                 <select
@@ -227,6 +253,7 @@
                 </select>
 
 
+
                 <label for="description">
                     What do you want to learn?
                 </label>
@@ -240,12 +267,14 @@
                 ></textarea>
 
 
+
                 <button
                     type="submit"
                     class="learn-submit dashboard-card-button"
                 >
                     Save Learning Goal
                 </button>
+
 
             </form>
 
@@ -257,10 +286,12 @@
                 ← Back to Dashboard
             </a>
 
+
         </div>
 
     </main>
 
+
 </body>
 
-                    </html>
+</html>

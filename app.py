@@ -53,7 +53,7 @@ init_database()
 
 
 # ==================================================
-# PROFILE PICTURES
+# PROFILE PICTURE SETTINGS
 # ==================================================
 
 UPLOAD_FOLDER = "uploads"
@@ -110,12 +110,12 @@ def signup():
 
         conn = get_db()
 
-        user = conn.execute(
+        existing_user = conn.execute(
             "SELECT * FROM users WHERE email = ?",
             (email,)
         ).fetchone()
 
-        if user is None:
+        if existing_user is None:
 
             conn.execute(
                 """
@@ -146,7 +146,10 @@ def login():
 
     if request.method == "POST":
 
-        email = request.form.get("email", "").strip().lower()
+        email = request.form.get(
+            "email",
+            ""
+        ).strip().lower()
 
         if not email:
 
@@ -162,16 +165,14 @@ def login():
             (email,)
         ).fetchone()
 
-        if user is None:
+        conn.close()
 
-            conn.close()
+        if user is None:
 
             return render_template(
                 "login.html",
                 error="Account not found. Please sign up first."
             )
-
-        conn.close()
 
         session["email"] = email
 
@@ -195,13 +196,18 @@ def dashboard():
     conn = get_db()
 
     user = conn.execute(
-        "SELECT * FROM users WHERE email = ?",
+        """
+        SELECT *
+        FROM users
+        WHERE email = ?
+        """,
         (email,)
     ).fetchone()
 
     skills = conn.execute(
         """
-        SELECT * FROM skills
+        SELECT *
+        FROM skills
         WHERE user_email = ?
         ORDER BY id DESC
         """,
@@ -231,7 +237,9 @@ def browse():
 
     skills = conn.execute(
         """
-        SELECT skills.*, users.name
+        SELECT
+            skills.*,
+            users.name
         FROM skills
         JOIN users
         ON skills.user_email = users.email
@@ -261,10 +269,25 @@ def add_skill():
 
     if request.method == "POST":
 
-        skill = request.form.get("skill", "").strip()
-        category = request.form.get("category", "").strip()
-        level = request.form.get("level", "").strip()
-        description = request.form.get("description", "").strip()
+        skill = request.form.get(
+            "skill",
+            ""
+        ).strip()
+
+        category = request.form.get(
+            "category",
+            ""
+        ).strip()
+
+        level = request.form.get(
+            "level",
+            ""
+        ).strip()
+
+        description = request.form.get(
+            "description",
+            ""
+        ).strip()
 
         if not skill:
 
@@ -278,7 +301,13 @@ def add_skill():
         conn.execute(
             """
             INSERT INTO skills
-            (user_email, skill, category, level, description)
+            (
+                user_email,
+                skill,
+                category,
+                level,
+                description
+            )
             VALUES (?, ?, ?, ?, ?)
             """,
             (
@@ -352,13 +381,18 @@ def profile():
     conn = get_db()
 
     user = conn.execute(
-        "SELECT * FROM users WHERE email = ?",
+        """
+        SELECT *
+        FROM users
+        WHERE email = ?
+        """,
         (email,)
     ).fetchone()
 
     skills = conn.execute(
         """
-        SELECT * FROM skills
+        SELECT *
+        FROM skills
         WHERE user_email = ?
         ORDER BY id DESC
         """,
@@ -395,7 +429,11 @@ def edit_profile():
     conn = get_db()
 
     user = conn.execute(
-        "SELECT * FROM users WHERE email = ?",
+        """
+        SELECT *
+        FROM users
+        WHERE email = ?
+        """,
         (email,)
     ).fetchone()
 
@@ -433,10 +471,12 @@ def edit_profile():
                 about=about
             )
 
-        other_user = conn.execute(
+        duplicate = conn.execute(
             """
-            SELECT id FROM users
-            WHERE email = ? AND id != ?
+            SELECT id
+            FROM users
+            WHERE email = ?
+            AND id != ?
             """,
             (
                 new_email,
@@ -444,7 +484,7 @@ def edit_profile():
             )
         ).fetchone()
 
-        if other_user:
+        if duplicate:
 
             conn.close()
 
@@ -572,12 +612,10 @@ def uploaded_file(filename):
 
 
 # ==================================================
-# SWAP SKILL
+# SWAP SKILL PAGE
 # ==================================================
 
-@app.route(
-    "/swap-skill/<int:skill_id>"
-)
+@app.route("/swap-skill/<int:skill_id>")
 def swap_skill(skill_id):
 
     email = session.get("email")
@@ -589,7 +627,9 @@ def swap_skill(skill_id):
 
     skill = conn.execute(
         """
-        SELECT skills.*, users.name
+        SELECT
+            skills.*,
+            users.name
         FROM skills
         JOIN users
         ON skills.user_email = users.email
@@ -622,7 +662,7 @@ def logout():
 
 
 # ==================================================
-# START FLASK
+# START APP
 # ==================================================
 
 if __name__ == "__main__":

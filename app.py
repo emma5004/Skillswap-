@@ -53,7 +53,7 @@ init_database()
 
 
 # ==================================================
-# PROFILE PICTURE SETTINGS
+# PROFILE PICTURE
 # ==================================================
 
 UPLOAD_FOLDER = "uploads"
@@ -115,22 +115,30 @@ def signup():
             (email,)
         ).fetchone()
 
-        if existing_user is None:
+        if existing_user:
 
-            conn.execute(
-                """
-                INSERT INTO users
-                (name, email, about, profile_picture)
-                VALUES (?, ?, ?, ?)
-                """,
-                (name, email, "", "")
+            conn.close()
+
+            return render_template(
+                "signup.html",
+                error="An account with this email already exists."
             )
 
-            conn.commit()
+        conn.execute(
+            """
+            INSERT INTO users
+            (name, email, about, profile_picture)
+            VALUES (?, ?, ?, ?)
+            """,
+            (name, email, "", "")
+        )
 
+        conn.commit()
         conn.close()
 
         session["email"] = email
+        session["name"] = name
+        session["profile_picture"] = ""
 
         return redirect("/dashboard")
 
@@ -161,7 +169,11 @@ def login():
         conn = get_db()
 
         user = conn.execute(
-            "SELECT * FROM users WHERE email = ?",
+            """
+            SELECT *
+            FROM users
+            WHERE email = ?
+            """,
             (email,)
         ).fetchone()
 
@@ -174,7 +186,9 @@ def login():
                 error="Account not found. Please sign up first."
             )
 
-        session["email"] = email
+        session["email"] = user["email"]
+        session["name"] = user["name"]
+        session["profile_picture"] = user["profile_picture"]
 
         return redirect("/dashboard")
 
@@ -218,6 +232,9 @@ def dashboard():
 
     if user is None:
         return redirect("/login")
+
+    session["name"] = user["name"]
+    session["profile_picture"] = user["profile_picture"]
 
     return render_template(
         "dashboard.html",
@@ -344,22 +361,22 @@ def learn_skill():
         session["learning_skill"] = request.form.get(
             "skill",
             ""
-        )
+        ).strip()
 
         session["learning_category"] = request.form.get(
             "category",
             ""
-        )
+        ).strip()
 
         session["learning_level"] = request.form.get(
             "level",
             ""
-        )
+        ).strip()
 
         session["learning_description"] = request.form.get(
             "description",
             ""
-        )
+        ).strip()
 
         return redirect("/dashboard")
 
@@ -403,6 +420,8 @@ def profile():
 
     if user is None:
         return redirect("/login")
+
+    session["profile_picture"] = user["profile_picture"]
 
     return render_template(
         "profile.html",
@@ -516,6 +535,7 @@ def edit_profile():
         conn.close()
 
         session["email"] = new_email
+        session["name"] = name
 
         return redirect("/profile")
 
@@ -595,6 +615,8 @@ def upload_profile_picture():
     conn.commit()
     conn.close()
 
+    session["profile_picture"] = filename
+
     return redirect("/profile")
 
 
@@ -612,7 +634,7 @@ def uploaded_file(filename):
 
 
 # ==================================================
-# SWAP SKILL PAGE
+# SWAP SKILL
 # ==================================================
 
 @app.route("/swap-skill/<int:skill_id>")
@@ -662,7 +684,7 @@ def logout():
 
 
 # ==================================================
-# START APP
+# START FLASK
 # ==================================================
 
 if __name__ == "__main__":

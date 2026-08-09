@@ -671,3 +671,22 @@ body {
 .profile-button:hover {
     background: #10357d;
         }
+.dashboard-profile-top {
+    margin-bottom: 20px;
+}
+
+.dashboard-profile-picture,
+.dashboard-profile-placeholder {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dashboard-profile-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    font-size: 40px;
+    }

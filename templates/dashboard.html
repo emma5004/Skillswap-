@@ -22,53 +22,90 @@
         </div>
 
         <div class="dashboard-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/browse">Find Skills</a>
-            <a href="#">Messages</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/browse">
+                Find Skills
+            </a>
+
+            <a href="#">
+                Messages
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/logout"
+               class="logout-btn">
+                Logout
+            </a>
+
         </div>
 
     </nav>
 
 
     <!-- MAIN DASHBOARD -->
+
     <main class="dashboard-container">
 
 
         <!-- WELCOME -->
+
         <section class="welcome-section">
 
             <div>
-                <h1>Welcome, {{ name }} 👋</h1>
+
+                <h1>
+                    Welcome, {{ name }} 👋
+                </h1>
 
                 <p>
                     Connect with people, exchange knowledge,
                     and learn something new.
                 </p>
+
             </div>
 
-            <a href="/profile" class="profile-button">
+
+            <a href="/profile"
+               class="profile-button">
+
                 Complete Profile
+
             </a>
 
         </section>
 
 
+
         <!-- QUICK ACTIONS -->
+
         <section class="dashboard-section">
 
-            <h2>What would you like to do?</h2>
+            <h2>
+                What would you like to do?
+            </h2>
+
 
             <div class="action-grid">
 
 
                 <!-- TEACH -->
+
                 <div class="dashboard-card">
 
-                    <div class="card-icon">🎓</div>
+                    <div class="card-icon">
+                        🎓
+                    </div>
 
-                    <h3>Teach a Skill</h3>
+                    <h3>
+                        Teach a Skill
+                    </h3>
 
                     <p>
                         Share what you know and help someone
@@ -77,18 +114,26 @@
 
                     <a href="/add-skill"
                        class="dashboard-card-button">
+
                         Add My Skill
+
                     </a>
 
                 </div>
 
 
+
                 <!-- FIND -->
+
                 <div class="dashboard-card">
 
-                    <div class="card-icon">🔍</div>
+                    <div class="card-icon">
+                        🔍
+                    </div>
 
-                    <h3>Find a Skill</h3>
+                    <h3>
+                        Find a Skill
+                    </h3>
 
                     <p>
                         Find people who can teach you the
@@ -97,18 +142,26 @@
 
                     <a href="/browse"
                        class="dashboard-card-button">
+
                         Find Skills
+
                     </a>
 
                 </div>
 
 
+
                 <!-- SWAP -->
+
                 <div class="dashboard-card">
 
-                    <div class="card-icon">🤝</div>
+                    <div class="card-icon">
+                        🤝
+                    </div>
 
-                    <h3>Skill Swap</h3>
+                    <h3>
+                        Skill Swap
+                    </h3>
 
                     <p>
                         Exchange your skills with another
@@ -117,7 +170,9 @@
 
                     <a href="/browse"
                        class="dashboard-card-button">
+
                         Start Swapping
+
                     </a>
 
                 </div>
@@ -127,28 +182,36 @@
         </section>
 
 
+
         <!-- MY SKILLS -->
+
         <section class="dashboard-section">
 
             <div class="section-title">
 
-                <h2>My Skills</h2>
+                <h2>
+                    My Skills
+                </h2>
 
                 <a href="/add-skill"
                    class="add-button">
+
                     + Add Skill
+
                 </a>
 
             </div>
 
 
-            {% if skills and skills|length > 0 %}
+            {% if skills %}
 
                 {% for skill in skills %}
 
                 <div class="dashboard-card">
 
-                    <div class="card-icon">💡</div>
+                    <div class="card-icon">
+                        💡
+                    </div>
 
                     <h3>
                         {{ skill["skill"] }}
@@ -168,12 +231,89 @@
                         {{ skill["description"] }}
                     </p>
 
-                    <a
-                        href="/swap-skill/{{ skill['id'] }}"
-                        class="dashboard-card-button"
-                    >
-                        Swap Skill
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-card">
+
+                    <div class="empty-icon">
+                        💡
+                    </div>
+
+                    <h3>
+                        No skills added yet
+                    </h3>
+
+                    <p>
+                        Tell the Skill Swap community what
+                        you can teach.
+                    </p>
+
+                    <a href="/add-skill"
+                       class="primary-button">
+
+                        Add Your First Skill
+
                     </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- SKILLS I WANT TO LEARN -->
+
+        <section class="dashboard-section">
+
+            <div class="section-title">
+
+                <h2>
+                    Skills I Want to Learn
+                </h2>
+
+                <a href="/learn-skill"
+                   class="add-button">
+
+                    + Add Skill
+
+                </a>
+
+            </div>
+
+
+            {% if learning_goals %}
+
+                {% for goal in learning_goals %}
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        {{ goal["skill"] }}
+                    </h3>
+
+                    <p>
+                        <strong>Category:</strong>
+                        {{ goal["category"] }}
+                    </p>
+
+                    <p>
+                        <strong>Level:</strong>
+                        {{ goal["level"] }}
+                    </p>
+
+                    <p>
+                        {{ goal["description"] }}
+                    </p>
 
                 </div>
 
@@ -181,100 +321,46 @@
 
             {% else %}
 
-            <div class="empty-card">
+                <div class="empty-card">
 
-                <div class="empty-icon">💡</div>
+                    <div class="empty-icon">
+                        📚
+                    </div>
 
-                <h3>No skills added yet</h3>
+                    <h3>
+                        No learning goals yet
+                    </h3>
 
-                <p>
-                    Tell the Skill Swap community what
-                    you can teach.
-                </p>
+                    <p>
+                        Add skills you want to learn and
+                        we'll help you find a partner.
+                    </p>
 
-                <a href="/add-skill"
-                   class="primary-button">
-                    Add Your First Skill
-                </a>
-
-            </div>
-
-            {% endif %}
-
-        </section>
-
-
-        <!-- SKILLS I WANT TO LEARN -->
-        <section class="dashboard-section">
-
-            <div class="section-title">
-
-                <h2>Skills I Want to Learn</h2>
-
-                <a href="/learn-skill"
-                   class="add-button">
-                    + Add Skill
-                </a>
-
-            </div>
-
-
-            {% if session.get('learning_skill') %}
-
-            <div class="dashboard-card">
-
-                <div class="card-icon">📚</div>
-
-                <h3>
-                    {{ session.get('learning_skill') }}
-                </h3>
-
-                <p>
-                    <strong>Category:</strong>
-                    {{ session.get('learning_category') }}
-                </p>
-
-                <p>
-                    <strong>Level:</strong>
-                    {{ session.get('learning_level') }}
-                </p>
-
-                <p>
-                    {{ session.get('learning_description') }}
-                </p>
-
-            </div>
-
-            {% else %}
-
-            <div class="empty-card">
-
-                <div class="empty-icon">📚</div>
-
-                <h3>No learning goals yet</h3>
-
-                <p>
-                    Add skills you want to learn and
-                    we'll help you find a partner.
-                </p>
-
-            </div>
+                </div>
 
             {% endif %}
 
         </section>
+
 
 
         <!-- SWAP REQUESTS -->
+
         <section class="dashboard-section">
 
-            <h2>My Swap Requests</h2>
+            <h2>
+                My Swap Requests
+            </h2>
 
             <div class="empty-card">
 
-                <div class="empty-icon">🤝</div>
+                <div class="empty-icon">
+                    🤝
+                </div>
 
-                <h3>No swap requests</h3>
+                <h3>
+                    No swap requests
+                </h3>
 
                 <p>
                     When you connect with another person,
@@ -285,7 +371,9 @@
 
         </section>
 
+
     </main>
 
 </body>
+
     </html>

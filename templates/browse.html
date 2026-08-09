@@ -3,78 +3,305 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Find Skills | Skill Swap</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .search-box {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .search-form label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .search-form input,
+        .search-form select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            font-size: 15px;
+        }
+
+        .search-button {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .skill-owner {
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .no-skills {
+            text-align: center;
+            padding: 35px;
+        }
+
+        @media (max-width: 750px) {
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .search-button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body class="dashboard-page">
 
+
     <!-- NAVIGATION -->
+
     <nav class="dashboard-nav">
 
         <div class="dashboard-logo">
-            <div class="small-logo">SS</div>
-            <span>Skill Swap</span>
+
+            <div class="small-logo">
+                SS
+            </div>
+
+            <span>
+                Skill Swap
+            </span>
+
         </div>
 
+
         <div class="dashboard-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/browse">Find Skills</a>
-            <a href="#">Messages</a>
-            <a href="#">Profile</a>
-            <a href="/logout" class="logout-btn">Logout</a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/browse">
+                Find Skills
+            </a>
+
+            <a href="#">
+                Messages
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/logout"
+               class="logout-btn">
+                Logout
+            </a>
+
         </div>
 
     </nav>
 
 
-    <!-- FIND SKILLS -->
+
+    <!-- MAIN -->
+
     <main class="dashboard-container">
+
+
+        <!-- HEADER -->
 
         <section class="welcome-section">
 
             <div>
-                <h1>Find a Skill 🔍</h1>
+
+                <h1>
+                    Find a Skill 🔍
+                </h1>
 
                 <p>
-                    Find people who can teach you the skills
-                    you want to learn.
+                    Find people who can teach you the
+                    skills you want to learn.
                 </p>
+
             </div>
 
         </section>
 
 
+
         <!-- SEARCH -->
+
         <section class="dashboard-section">
 
-            <div class="empty-card">
+            <div class="search-box">
 
-                <h2>What do you want to learn?</h2>
+                <h2>
+                    What do you want to learn?
+                </h2>
 
                 <p>
-                    Search for a skill and find someone
-                    who can teach you.
+                    Search by skill, category or level.
                 </p>
 
-                <form action="/browse" method="GET">
 
-                    <input
-                        type="text"
-                        name="search"
-                        placeholder="e.g. Video Editing"
-                        style="width:80%; padding:14px; border:1px solid #ddd; border-radius:8px;"
-                    >
+                <form
+                    action="/browse"
+                    method="GET"
+                    class="search-form"
+                >
+
+
+                    <!-- SKILL -->
+
+                    <div>
+
+                        <label for="search">
+                            Skill
+                        </label>
+
+                        <input
+                            type="text"
+                            id="search"
+                            name="search"
+                            value="{{ request.args.get('search', '') }}"
+                            placeholder="e.g. Video Editing"
+                        >
+
+                    </div>
+
+
+
+                    <!-- CATEGORY -->
+
+                    <div>
+
+                        <label for="category">
+                            Category
+                        </label>
+
+                        <select
+                            id="category"
+                            name="category"
+                        >
+
+                            <option value="">
+                                All Categories
+                            </option>
+
+                            <option value="Technology">
+                                Technology
+                            </option>
+
+                            <option value="Design">
+                                Design
+                            </option>
+
+                            <option value="Business">
+                                Business
+                            </option>
+
+                            <option value="Music">
+                                Music
+                            </option>
+
+                            <option value="Photography">
+                                Photography
+                            </option>
+
+                            <option value="Video Editing">
+                                Video Editing
+                            </option>
+
+                            <option value="Writing">
+                                Writing
+                            </option>
+
+                            <option value="Marketing">
+                                Marketing
+                            </option>
+
+                            <option value="Cooking">
+                                Cooking
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- LEVEL -->
+
+                    <div>
+
+                        <label for="level">
+                            Level
+                        </label>
+
+                        <select
+                            id="level"
+                            name="level"
+                        >
+
+                            <option value="">
+                                All Levels
+                            </option>
+
+                            <option value="Beginner">
+                                Beginner
+                            </option>
+
+                            <option value="Intermediate">
+                                Intermediate
+                            </option>
+
+                            <option value="Advanced">
+                                Advanced
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- BUTTON -->
 
                     <button
                         type="submit"
-                        class="primary-button">
+                        class="search-button dashboard-card-button"
+                    >
                         Search
                     </button>
+
 
                 </form>
 
@@ -83,76 +310,126 @@
         </section>
 
 
+
         <!-- AVAILABLE SKILLS -->
+
         <section class="dashboard-section">
 
-            <h2>Popular Skills</h2>
+            <h2>
+                Available Skills
+            </h2>
 
-            <div class="action-grid">
 
-                <div class="dashboard-card">
+            {% if skills %}
 
-                    <div class="card-icon">🎨</div>
+                <div class="action-grid">
 
-                    <h3>Graphic Design</h3>
+                    {% for skill in skills %}
 
-                    <p>
-                        Learn graphic design from someone
-                        who already has the skill.
-                    </p>
+                    <div class="dashboard-card">
 
-                    <button class="dashboard-card-button">
-                        View Skill
-                    </button>
+                        <div class="card-icon">
+                            🎓
+                        </div>
+
+
+                        <h3>
+                            {{ skill["skill"] }}
+                        </h3>
+
+
+                        <p class="skill-owner">
+
+                            👤
+                            {{ skill["name"] }}
+
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Category:
+                            </strong>
+
+                            {{ skill["category"] }}
+
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Level:
+                            </strong>
+
+                            {{ skill["level"] }}
+
+                        </p>
+
+
+                        <p>
+                            {{ skill["description"] }}
+                        </p>
+
+
+                        <a
+                            href="/swap-skill/{{ skill['id'] }}"
+                            class="dashboard-card-button"
+                        >
+                            🤝 Swap Skill
+                        </a>
+
+                    </div>
+
+                    {% endfor %}
 
                 </div>
 
 
-                <div class="dashboard-card">
+            {% else %}
 
-                    <div class="card-icon">🎬</div>
+                <div class="empty-card no-skills">
 
-                    <h3>Video Editing</h3>
+                    <div class="empty-icon">
+                        🔍
+                    </div>
+
+                    <h3>
+                        No skills found
+                    </h3>
 
                     <p>
-                        Find someone who can teach you
-                        video editing.
+                        No one has posted a matching skill yet.
                     </p>
 
-                    <button class="dashboard-card-button">
-                        View Skill
-                    </button>
+                    <a
+                        href="/add-skill"
+                        class="primary-button"
+                    >
+                        Add My Skill
+                    </a>
 
                 </div>
 
+            {% endif %}
 
-                <div class="dashboard-card">
-
-                    <div class="card-icon">💻</div>
-
-                    <h3>Web Development</h3>
-
-                    <p>
-                        Learn how to create websites and
-                        applications.
-                    </p>
-
-                    <button class="dashboard-card-button">
-                        View Skill
-                    </button>
-
-                </div>
-
-            </div>
 
         </section>
 
 
-        <a href="/dashboard" class="back-home">
+
+        <!-- BACK -->
+
+        <a
+            href="/dashboard"
+            class="back-home"
+        >
             ← Back to Dashboard
         </a>
 
+
     </main>
 
+
 </body>
-    </html>
+
+                            </html>

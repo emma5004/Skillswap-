@@ -72,6 +72,20 @@ def init_database():
         )
     """)
 
+    # ADVERTISEMENTS
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS advertisements (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            brand_name TEXT NOT NULL,
+            category TEXT DEFAULT '',
+            description TEXT DEFAULT '',
+            contact TEXT DEFAULT '',
+            website TEXT DEFAULT '',
+            image TEXT DEFAULT ''
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -80,7 +94,7 @@ init_database()
 
 
 # ==================================================
-# PROFILE PICTURE SETTINGS
+# PROFILE PICTURE / UPLOAD SETTINGS
 # ==================================================
 
 UPLOAD_FOLDER = "uploads"
@@ -93,7 +107,8 @@ ALLOWED_EXTENSIONS = {
     "png",
     "jpg",
     "jpeg",
-    "gif"
+    "gif",
+    "webp"
 }
 
 
@@ -107,11 +122,42 @@ def allowed_file(filename):
 
 
 # ==================================================
+# CURRENT USER
+# ==================================================
+
+def current_user_id():
+
+    email = session.get("email")
+
+    if not email:
+        return None
+
+    conn = get_db()
+
+    user = conn.execute(
+        """
+        SELECT id
+        FROM users
+        WHERE email = ?
+        """,
+        (email,)
+    ).fetchone()
+
+    conn.close()
+
+    if user is None:
+        return None
+
+    return user["id"]
+
+
+# ==================================================
 # HOME
 # ==================================================
 
 @app.route("/")
 def home():
+
     return render_template("home.html")
 
 
@@ -396,6 +442,7 @@ def browse():
 # ==================================================
 
 @app.route("/add-skill", methods=["GET", "POST"])
+@app.route("/add_skill", methods=["GET", "POST"])
 def add_skill():
 
     email = session.get("email")
@@ -453,6 +500,7 @@ def add_skill():
 # ==================================================
 
 @app.route("/learn-skill", methods=["GET", "POST"])
+@app.route("/learn_skill", methods=["GET", "POST"])
 def learn_skill():
 
     email = session.get("email")
@@ -528,6 +576,13 @@ def profile():
         (email,)
     ).fetchone()
 
+    if user is None:
+
+        conn.close()
+        session.clear()
+
+        return redirect("/login")
+
     skills = conn.execute(
         """
         SELECT *
@@ -550,9 +605,6 @@ def profile():
 
     conn.close()
 
-    if user is None:
-        return redirect("/login")
-
     session["profile_picture"] = user["profile_picture"]
 
     return render_template(
@@ -571,6 +623,7 @@ def profile():
 # ==================================================
 
 @app.route("/edit-profile", methods=["GET", "POST"])
+@app.route("/edit_profile", methods=["GET", "POST"])
 def edit_profile():
 
     email = session.get("email")
@@ -591,7 +644,219 @@ def edit_profile():
 
     if user is None:
 
-        conn
+        conn.close()
+        session.clear()
+
+        return redirect("/login")
+
+    if request.method == "POST":
+
+        name = request.form.get("name", "").strip()
+        about = request.form.get("about", "").strip()
+
+        if not name:
+
+            conn.close()
+
+            return render_template(
+                "edit_profile.html",
+                user=user,
+                error="Please enter your name."
+            )
+
+        profile_picture = user["profile_picture"]
+
+        image = None
+
+        if "profile_picture" in request.files:
+            image = request.files["profile_picture"]
+
+        elif "image" in request.files:
+            image = request.files["image"]
+
+        if image and image.filename:
+
+            if allowed_file(image.filename):
+
+                filename = secure_filename(image.filename)
+
+                image.save(
+                    os.path.join(
+                        UPLOAD_FOLDER,
+                        filename
+                    )
+                )
+
+                profile_picture = filename
+
+        conn.execute(
+            """
+            UPDATE users
+            SET name = ?,
+                about = ?,
+                profile_picture = ?
+            WHERE email = ?
+            """,
+            (
+                name,
+                about,
+                profile_picture,
+                email
+            )
+        )
+
+        conn.commit()
+        conn.close()
+
+        session["name"] = name
+        session["profile_picture"] = profile_picture
+
+        return redirect("/profile")
+
+    conn.close()
+
+    return render_template(
+        "edit_profile.html",
+        user=user
+    )
+
+
+# ==================================================
+# SWAP SKILL
+# ==================================================
+
+@app.route("/swap-skill", methods=["GET", "POST"])
+@app.route("/swap_skill", methods=["GET", "POST"])
+def swap_skill():
+
+    email = session.get("email")
+
+    if not email:
+        return redirect("/login")
+
+    conn = get_db()
+
+    if request.method == "POST":
+
+        skill_id = request.form.get("skill_id", "").strip()
+        receiver_email = request.form.get("receiver_email", "").strip().lower()
+        my_skill = request.form.get("my_skill", "").strip()
+        message = request.form.get("message", "").strip()
+
+        if not skill_id or not receiver_email or not my_skill:
+
+            skills = conn.execute(
+                """
+                SELECT
+                    skills.*,
+                    users.name
+                FROM skills
+                JOIN users
+                ON skills.user_email = users.email
+                WHERE skills.user_email != ?
+                ORDER BY skills.id DESC
+                """,
+                (email,)
+            ).fetchall()
+
+            my_skills = conn.execute(
+                """
+                SELECT *
+                FROM skills
+                WHERE user_email = ?
+                ORDER BY id DESC
+                """,
+                (email,)
+            ).fetchall()
+
+            conn.close()
+
+            return render_template(
+                "swap_skill.html",
+                skills=skills,
+                my_skills=my_skills,
+                error="Please complete the swap request."
+            )
+
+        skill = conn.execute(
+            """
+            SELECT *
+            FROM skills
+            WHERE id = ?
+            """,
+            (skill_id,)
+        ).fetchone()
+
+        if skill is None:
+
+            conn.close()
+
+            return render_template(
+                "swap_skill.html",
+                error="The selected skill could not be found."
+            )
+
+        conn.execute(
+            """
+            INSERT INTO swap_requests
+            (
+                sender_email,
+                receiver_email,
+                skill_id,
+                my_skill,
+                message,
+                status
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                email,
+                receiver_email,
+                skill_id,
+                my_skill,
+                message,
+                "pending"
+            )
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/browse")
+
+    skills = conn.execute(
+        """
+        SELECT
+            skills.*,
+            users.name
+        FROM skills
+        JOIN users
+        ON skills.user_email = users.email
+        WHERE skills.user_email != ?
+        ORDER BY skills.id DESC
+        """,
+        (email,)
+    ).fetchall()
+
+    my_skills = conn.execute(
+        """
+        SELECT *
+        FROM skills
+        WHERE user_email = ?
+        ORDER BY id DESC
+        """,
+        (email,)
+    ).fetchall()
+
+    conn.close()
+
+    return render_template(
+        "swap_skill.html",
+        skills=skills,
+        my_skills=my_skills
+    )
+
+
 # ==================================================
 # ADVERTISE YOUR BRAND
 # ==================================================
@@ -613,6 +878,7 @@ def advertise():
         website = request.form.get("website", "").strip()
 
         if not brand_name:
+
             return render_template(
                 "advertise.html",
                 error="Please enter your brand name."
@@ -626,16 +892,18 @@ def advertise():
 
             if image and image.filename:
 
-                filename = secure_filename(image.filename)
+                if allowed_file(image.filename):
 
-                image_filename = filename
+                    filename = secure_filename(image.filename)
 
-                image.save(
-                    os.path.join(
-                        UPLOAD_FOLDER,
-                        filename
+                    image_filename = filename
+
+                    image.save(
+                        os.path.join(
+                            UPLOAD_FOLDER,
+                            filename
+                        )
                     )
-                )
 
         conn = get_db()
 
@@ -685,7 +953,7 @@ def advertisements():
         """
         SELECT
             advertisements.*,
-            users.username
+            users.name
         FROM advertisements
         JOIN users
         ON advertisements.user_id = users.id
@@ -698,4 +966,42 @@ def advertisements():
     return render_template(
         "advertisements.html",
         ads=ads
-        )
+    )
+
+
+# ==================================================
+# UPLOADED FILES
+# ==================================================
+
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+
+    return send_from_directory(
+        app.config["UPLOAD_FOLDER"],
+        filename
+    )
+
+
+# ==================================================
+# LOGOUT
+# ==================================================
+
+@app.route("/logout")
+def logout():
+
+    session.clear()
+
+    return redirect("/login")
+
+
+# ==================================================
+# START APPLICATION
+# ==================================================
+
+if __name__ == "__main__":
+
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=True
+)

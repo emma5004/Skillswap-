@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertise Your Brand | Skill Swap</title><link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+
+</head><body class="dashboard-page"><nav class="dashboard-nav">
+
+    <div class="dashboard-logo">
+        <div class="small-logo">SS</div>
+        <span>Skill Swap</span>
+    </div>
+
+    <div class="dashboard-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/browse">Find Skills</a>
+        <a href="/chat-list">Messages</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+</nav>
+
+<main class="dashboard-container">
+
+    <section class="welcome-section">
+
+        <div>
+            <h1>Advertise Your Brand 📢</h1>
+
+            <p>
+                Promote your business, brand, service or product
+                to the Skill Swap community.
+            </p>
+        </div>
+
+    </section>
+
+    <section class="dashboard-section">
+
+        <div class="empty-card">
+
+            <h2>Create Your Advertisement</h2>
+
+            {% if error %}
+                <p style="color:red;">
+                    {{ error }}
+                </p>
+            {% endif %}
+
+            <form action="/advertise"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <p>
+                    <strong>Brand / Business Name</strong>
+                </p>
+
+                <input
+                    type="text"
+                    name="brand_name"
+                    placeholder="Enter your brand name"
+                    required
+                    style="width:90%; padding:14px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;"
+                >
+
+                <p>
+                    <strong>Category</strong>
+                </p>
+
+                <input
+                    type="text"
+                    name="category"
+                    placeholder="e.g. Fashion, Food, Technology"
+                    style="width:90%; padding:14px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;"
+                >
+
+                <p>
+                    <strong>Description</strong>
+                </p>
+
+                <textarea
+                    name="description"
+                    placeholder="Tell people about your brand..."
+                    rows="5"
+                    style="width:90%; padding:14px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;"
+                ></textarea>
+
+                <p>
+                    <strong>Contact</strong>
+                </p>
+
+                <input
+                    type="text"
+                    name="contact"
+                    placeholder="Phone number, WhatsApp or email"
+                    style="width:90%; padding:14px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;"
+                >
+
+                <p>
+                    <strong>Website / Social Media</strong>
+                </p>
+
+                <input
+                    type="text"
+                    name="website"
+                    placeholder="Website or social-media link"
+                    style="width:90%; padding:14px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;"
+                >
+
+                <p>
+                    <strong>Advertisement Image</strong>
+                </p>
+
+                <input
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    style="margin-bottom:20px;"
+                >
+
+                <br>
+
+                <button
+                    type="submit"
+                    class="primary-button">
+                    Publish Advertisement 📢
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <a href="/dashboard" class="back-home">
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+</body>
+</html>

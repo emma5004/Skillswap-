@@ -464,7 +464,81 @@ def learn_skill():
         return redirect("/dashboard")
 
     return render_template("learn_skill.html")
+# ==================================================
+# SWAP SKILL
+# ==================================================
 
+@app.route("/swap-skill", methods=["GET", "POST"])
+def swap_skill():
+
+    email = session.get("email")
+
+    if not email:
+        return redirect("/login")
+
+    conn = get_db()
+
+    # Skills I can teach
+    my_skills = conn.execute(
+        """
+        SELECT *
+        FROM skills
+        WHERE user_email = ?
+        ORDER BY id DESC
+        """,
+        (email,)
+    ).fetchall()
+
+    # Skills other people can teach
+    skills = conn.execute(
+        """
+        SELECT
+            skills.*,
+            users.name
+        FROM skills
+        JOIN users
+        ON skills.user_email = users.email
+        WHERE skills.user_email != ?
+        ORDER BY skills.id DESC
+        """,
+        (email,)
+    ).fetchall()
+
+    if request.method == "POST":
+
+        skill_id = request.form.get("skill")
+        my_skill = request.form.get("my_skill")
+        message = request.form.get("message", "").strip()
+
+        if not skill_id or not my_skill:
+            conn.close()
+
+            return render_template(
+                "swap_skill.html",
+                skills=skills,
+                my_skills=my_skills,
+                error="Please select both skills."
+            )
+
+        # For now, save the swap request in the session.
+        # We will move this permanently into the database next.
+        session["swap_request"] = {
+            "skill_id": skill_id,
+            "my_skill": my_skill,
+            "message": message
+        }
+
+        conn.close()
+
+        return redirect("/dashboard")
+
+    conn.close()
+
+    return render_template(
+        "swap_skill.html",
+        skills=skills,
+        my_skills=my_skills
+)
 
 # ==================================================
 # PROFILE

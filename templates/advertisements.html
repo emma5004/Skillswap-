@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8"><meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Advertisements | Skill Swap</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+
+</head><body class="dashboard-page"><nav class="dashboard-nav">
+
+    <div class="dashboard-logo">
+        <div class="small-logo">SS</div>
+        <span>Skill Swap</span>
+    </div>
+
+    <div class="dashboard-links">
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/browse">
+            Find Skills
+        </a>
+
+        <a href="/chat-list">
+            Messages
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/logout"
+           class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<main class="dashboard-container">
+
+    <section class="welcome-section">
+
+        <div>
+
+            <h1>
+                Discover Brands 📢
+            </h1>
+
+            <p>
+                Explore businesses, brands and services
+                advertised by Skill Swap users.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-section">
+
+        <div class="section-title">
+
+            <h2>
+                Advertisements
+            </h2>
+
+            <a href="/advertise"
+               class="add-button">
+
+                + Advertise My Brand
+
+            </a>
+
+        </div>
+
+
+        {% if ads %}
+
+            <div class="action-grid">
+
+                {% for ad in ads %}
+
+                    <div class="dashboard-card">
+
+                        {% if ad["image"] %}
+
+                            <img
+                                src="{{ url_for('uploads', filename=ad['image']) }}"
+                                alt="{{ ad['brand_name'] }}"
+                                style="
+                                    width:100%;
+                                    max-height:220px;
+                                    object-fit:cover;
+                                    border-radius:12px;
+                                    margin-bottom:15px;
+                                "
+                            >
+
+                        {% else %}
+
+                            <div class="card-icon">
+                                📢
+                            </div>
+
+                        {% endif %}
+
+
+                        <h3>
+                            {{ ad["brand_name"] }}
+                        </h3>
+
+
+                        {% if ad["category"] %}
+
+                            <p>
+                                <strong>Category:</strong>
+                                {{ ad["category"] }}
+                            </p>
+
+                        {% endif %}
+
+
+                        <p>
+                            {{ ad["description"] }}
+                        </p>
+
+
+                        {% if ad["contact"] %}
+
+                            <p>
+                                <strong>Contact:</strong>
+                                {{ ad["contact"] }}
+                            </p>
+
+                        {% endif %}
+
+
+                        {% if ad["website"] %}
+
+                            <p>
+                                <strong>Website:</strong>
+                                {{ ad["website"] }}
+                            </p>
+
+                        {% endif %}
+
+
+                        <p>
+                            <strong>Advertiser:</strong>
+                            {{ ad["username"] }}
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-card">
+
+                <div class="empty-icon">
+                    📢
+                </div>
+
+                <h3>
+                    No advertisements yet
+                </h3>
+
+                <p>
+                    Be the first person to advertise
+                    your brand on Skill Swap.
+                </p>
+
+                <a href="/advertise"
+                   class="primary-button">
+
+                    Advertise My Brand
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <a href="/dashboard"
+       class="back-home">
+
+        ← Back to Dashboard
+
+    </a>
+
+</main>
+
+</body></html>

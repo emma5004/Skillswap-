@@ -59,6 +59,19 @@ def init_database():
         )
     """)
 
+    # SWAP REQUESTS
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS swap_requests (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            sender_email TEXT NOT NULL,
+            receiver_email TEXT NOT NULL,
+            skill_id INTEGER NOT NULL,
+            my_skill TEXT NOT NULL,
+            message TEXT DEFAULT '',
+            status TEXT DEFAULT 'pending'
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -99,7 +112,6 @@ def allowed_file(filename):
 
 @app.route("/")
 def home():
-
     return render_template("home.html")
 
 
@@ -112,15 +124,8 @@ def signup():
 
     if request.method == "POST":
 
-        name = request.form.get(
-            "name",
-            ""
-        ).strip()
-
-        email = request.form.get(
-            "email",
-            ""
-        ).strip().lower()
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip().lower()
 
         if not name or not email:
 
@@ -146,7 +151,7 @@ def signup():
 
             return render_template(
                 "signup.html",
-                error="An account with this email already exists."
+                error="An account with this email already exists. Please login."
             )
 
         conn.execute(
@@ -189,10 +194,7 @@ def login():
 
     if request.method == "POST":
 
-        email = request.form.get(
-            "email",
-            ""
-        ).strip().lower()
+        email = request.form.get("email", "").strip().lower()
 
         if not email:
 
@@ -240,7 +242,6 @@ def dashboard():
     email = session.get("email")
 
     if not email:
-
         return redirect("/login")
 
     conn = get_db()
@@ -253,6 +254,13 @@ def dashboard():
         """,
         (email,)
     ).fetchone()
+
+    if user is None:
+
+        conn.close()
+        session.clear()
+
+        return redirect("/login")
 
     skills = conn.execute(
         """
@@ -276,11 +284,8 @@ def dashboard():
 
     conn.close()
 
-    if user is None:
-
-        return redirect("/login")
-
     session["name"] = user["name"]
+    session["email"] = user["email"]
     session["profile_picture"] = user["profile_picture"]
 
     return render_template(
@@ -298,17 +303,78 @@ def dashboard():
 @app.route("/browse")
 def browse():
 
+    search = request.args.get("search", "").strip()
+    category = request.args.get("category", "").strip()
+    level = request.args.get("level", "").strip()
+
     conn = get_db()
 
-    skills = conn.execute(
-        """
+    query = """
         SELECT
             skills.*,
             users.name
         FROM skills
         JOIN users
         ON skills.user_email = users.email
+        WHERE 1 = 1
+    """
+
+    params = []
+
+    if search:
+
+        query += """
+            AND (
+                skills.skill LIKE ?
+                OR skills.description LIKE ?
+            )
+        """
+
+        search_value = "%" + search + "%"
+
+        params.append(search_value)
+        params.append(search_value)
+
+    if category:
+
+        query += """
+            AND skills.category = ?
+        """
+
+        params.append(category)
+
+    if level:
+
+        query += """
+            AND skills.level = ?
+        """
+
+        params.append(level)
+
+    query += """
         ORDER BY skills.id DESC
+    """
+
+    skills = conn.execute(
+        query,
+        params
+    ).fetchall()
+
+    categories = conn.execute(
+        """
+        SELECT DISTINCT category
+        FROM skills
+        WHERE category != ''
+        ORDER BY category
+        """
+    ).fetchall()
+
+    levels = conn.execute(
+        """
+        SELECT DISTINCT level
+        FROM skills
+        WHERE level != ''
+        ORDER BY level
         """
     ).fetchall()
 
@@ -316,7 +382,12 @@ def browse():
 
     return render_template(
         "browse.html",
-        skills=skills
+        skills=skills,
+        categories=categories,
+        levels=levels,
+        search=search,
+        selected_category=category,
+        selected_level=level
     )
 
 
@@ -330,30 +401,14 @@ def add_skill():
     email = session.get("email")
 
     if not email:
-
         return redirect("/login")
 
     if request.method == "POST":
 
-        skill = request.form.get(
-            "skill",
-            ""
-        ).strip()
-
-        category = request.form.get(
-            "category",
-            ""
-        ).strip()
-
-        level = request.form.get(
-            "level",
-            ""
-        ).strip()
-
-        description = request.form.get(
-            "description",
-            ""
-        ).strip()
+        skill = request.form.get("skill", "").strip()
+        category = request.form.get("category", "").strip()
+        level = request.form.get("level", "").strip()
+        description = request.form.get("description", "").strip()
 
         if not skill:
 
@@ -403,30 +458,14 @@ def learn_skill():
     email = session.get("email")
 
     if not email:
-
         return redirect("/login")
 
     if request.method == "POST":
 
-        skill = request.form.get(
-            "skill",
-            ""
-        ).strip()
-
-        category = request.form.get(
-            "category",
-            ""
-        ).strip()
-
-        level = request.form.get(
-            "level",
-            ""
-        ).strip()
-
-        description = request.form.get(
-            "description",
-            ""
-        ).strip()
+        skill = request.form.get("skill", "").strip()
+        category = request.form.get("category", "").strip()
+        level = request.form.get("level", "").strip()
+        description = request.form.get("description", "").strip()
 
         if not skill:
 
@@ -464,81 +503,7 @@ def learn_skill():
         return redirect("/dashboard")
 
     return render_template("learn_skill.html")
-# ==================================================
-# SWAP SKILL
-# ==================================================
 
-@app.route("/swap-skill", methods=["GET", "POST"])
-def swap_skill():
-
-    email = session.get("email")
-
-    if not email:
-        return redirect("/login")
-
-    conn = get_db()
-
-    # Skills I can teach
-    my_skills = conn.execute(
-        """
-        SELECT *
-        FROM skills
-        WHERE user_email = ?
-        ORDER BY id DESC
-        """,
-        (email,)
-    ).fetchall()
-
-    # Skills other people can teach
-    skills = conn.execute(
-        """
-        SELECT
-            skills.*,
-            users.name
-        FROM skills
-        JOIN users
-        ON skills.user_email = users.email
-        WHERE skills.user_email != ?
-        ORDER BY skills.id DESC
-        """,
-        (email,)
-    ).fetchall()
-
-    if request.method == "POST":
-
-        skill_id = request.form.get("skill")
-        my_skill = request.form.get("my_skill")
-        message = request.form.get("message", "").strip()
-
-        if not skill_id or not my_skill:
-            conn.close()
-
-            return render_template(
-                "swap_skill.html",
-                skills=skills,
-                my_skills=my_skills,
-                error="Please select both skills."
-            )
-
-        # For now, save the swap request in the session.
-        # We will move this permanently into the database next.
-        session["swap_request"] = {
-            "skill_id": skill_id,
-            "my_skill": my_skill,
-            "message": message
-        }
-
-        conn.close()
-
-        return redirect("/dashboard")
-
-    conn.close()
-
-    return render_template(
-        "swap_skill.html",
-        skills=skills,
-        my_skills=my_skills
-)
 
 # ==================================================
 # PROFILE
@@ -550,7 +515,6 @@ def profile():
     email = session.get("email")
 
     if not email:
-
         return redirect("/login")
 
     conn = get_db()
@@ -587,7 +551,6 @@ def profile():
     conn.close()
 
     if user is None:
-
         return redirect("/login")
 
     session["profile_picture"] = user["profile_picture"]
@@ -613,7 +576,6 @@ def edit_profile():
     email = session.get("email")
 
     if not email:
-
         return redirect("/login")
 
     conn = get_db()
@@ -629,84 +591,4 @@ def edit_profile():
 
     if user is None:
 
-        conn.close()
-
-        return redirect("/login")
-
-    if request.method == "POST":
-
-        name = request.form.get(
-            "name",
-            ""
-        ).strip()
-
-        new_email = request.form.get(
-            "email",
-            ""
-        ).strip().lower()
-
-        about = request.form.get(
-            "about",
-            ""
-        ).strip()
-
-        if not name or not new_email:
-
-            conn.close()
-
-            return render_template(
-                "edit_profile.html",
-                name=name,
-                email=new_email,
-                about=about
-            )
-
-        duplicate = conn.execute(
-            """
-            SELECT id
-            FROM users
-            WHERE email = ?
-            AND id != ?
-            """,
-            (
-                new_email,
-                user["id"]
-            )
-        ).fetchone()
-
-        if duplicate:
-
-            conn.close()
-
-            return render_template(
-                "edit_profile.html",
-                name=name,
-                email=new_email,
-                about=about,
-                error="That email is already being used."
-            )
-
-        # Update the user
-        conn.execute(
-            """
-            UPDATE users
-            SET name = ?,
-                email = ?,
-                about = ?
-            WHERE id = ?
-            """,
-            (
-                name,
-                new_email,
-                about,
-                user["id"]
-            )
-        )
-
-        # Keep the user's skills connected to the new email
-        conn.execute(
-            """
-            UPDATE skills
-            SET user_email = ?
-            WHERE user_email = ?
-            ""
+        conn

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Swap Skill | Skill Swap</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .swap-container {
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .swap-card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .swap-card h1 {
+            margin-bottom: 10px;
+        }
+
+        .swap-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .swap-card label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .swap-card select,
+        .swap-card textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            font-size: 15px;
+        }
+
+        .swap-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+    </style>
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="dashboard-nav">
+
+        <div class="dashboard-logo">
+
+            <div class="small-logo">
+                SS
+            </div>
+
+            <span>
+                Skill Swap
+            </span>
+
+        </div>
+
+
+        <div class="dashboard-links">
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/browse">
+                Find Skills
+            </a>
+
+            <a href="#">
+                Messages
+            </a>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/logout"
+               class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- SWAP PAGE -->
+
+    <main class="dashboard-container">
+
+        <div class="swap-container">
+
+            <div class="swap-card">
+
+                <h1>
+                    🤝 Start a Skill Swap
+                </h1>
+
+                <p>
+                    Choose the skill you want to learn
+                    and tell the other person what you
+                    can teach in return.
+                </p>
+
+
+                <form
+                    method="POST"
+                    action="/swap-skill"
+                >
+
+
+                    <label for="skill">
+
+                        Skill I Want to Learn
+
+                    </label>
+
+
+                    <select
+                        id="skill"
+                        name="skill"
+                        required
+                    >
+
+                        <option value="">
+                            Select a skill
+                        </option>
+
+                        {% for skill in skills %}
+
+                        <option value="{{ skill['id'] }}">
+
+                            {{ skill['skill'] }}
+                            -
+                            {{ skill['name'] }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+
+                    <label for="my_skill">
+
+                        My Skill to Offer
+
+                    </label>
+
+
+                    <select
+                        id="my_skill"
+                        name="my_skill"
+                        required
+                    >
+
+                        <option value="">
+                            Select your skill
+                        </option>
+
+                        {% for skill in my_skills %}
+
+                        <option value="{{ skill['skill'] }}">
+
+                            {{ skill['skill'] }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+
+                    <label for="message">
+
+                        Message
+
+                    </label>
+
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Tell them why you would like to swap skills..."
+                    ></textarea>
+
+
+
+                    <button
+                        type="submit"
+                        class="swap-button dashboard-card-button"
+                    >
+
+                        🤝 Send Swap Request
+
+                    </button>
+
+
+                </form>
+
+
+                <br>
+
+
+                <a
+                    href="/dashboard"
+                    class="back-home"
+                >
+
+                    ← Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+</body>
+
+                          </html>

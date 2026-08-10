@@ -592,3 +592,110 @@ def edit_profile():
     if user is None:
 
         conn
+# ==================================================
+# ADVERTISE YOUR BRAND
+# ==================================================
+
+@app.route("/advertise", methods=["GET", "POST"])
+def advertise():
+
+    user_id = current_user_id()
+
+    if not user_id:
+        return redirect("/login")
+
+    if request.method == "POST":
+
+        brand_name = request.form.get("brand_name", "").strip()
+        category = request.form.get("category", "").strip()
+        description = request.form.get("description", "").strip()
+        contact = request.form.get("contact", "").strip()
+        website = request.form.get("website", "").strip()
+
+        if not brand_name:
+            return render_template(
+                "advertise.html",
+                error="Please enter your brand name."
+            )
+
+        image_filename = ""
+
+        if "image" in request.files:
+
+            image = request.files["image"]
+
+            if image and image.filename:
+
+                filename = secure_filename(image.filename)
+
+                image_filename = filename
+
+                image.save(
+                    os.path.join(
+                        UPLOAD_FOLDER,
+                        filename
+                    )
+                )
+
+        conn = get_db()
+
+        conn.execute(
+            """
+            INSERT INTO advertisements
+            (
+                user_id,
+                brand_name,
+                category,
+                description,
+                contact,
+                website,
+                image
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                user_id,
+                brand_name,
+                category,
+                description,
+                contact,
+                website,
+                image_filename
+            )
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/advertisements")
+
+    return render_template("advertise.html")
+
+
+# ==================================================
+# VIEW ADVERTISEMENTS
+# ==================================================
+
+@app.route("/advertisements")
+def advertisements():
+
+    conn = get_db()
+
+    ads = conn.execute(
+        """
+        SELECT
+            advertisements.*,
+            users.username
+        FROM advertisements
+        JOIN users
+        ON advertisements.user_id = users.id
+        ORDER BY advertisements.id DESC
+        """
+    ).fetchall()
+
+    conn.close()
+
+    return render_template(
+        "advertisements.html",
+        ads=ads
+        )
